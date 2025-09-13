@@ -838,10 +838,10 @@
             ctx.fillText('Has Report', legendCenterX + 45, legendY + 28);
             
             // Calculate enhanced dimensions for heatmap
-            const startX = 150;
-            const startY = 100;
-            const cellWidth = Math.max(15, (baseWidth - 200) / dates.length);
-            const cellHeight = Math.max(18, (baseHeight - 150) / hfIds.length);
+            const startX = 75;
+            const startY = 50;
+            const cellWidth = Math.max(8, (baseWidth - 100) / dates.length);
+            const cellHeight = Math.max(9, (baseHeight - 75) / hfIds.length);
             
             // Draw enhanced heatmap with improved visibility
             hfIds.forEach((hfId, hfIndex) => {
