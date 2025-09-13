@@ -182,17 +182,6 @@
             transform: translateY(-2px);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
-        }
-
-        .btn-success:hover {
-            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
-            transform: translateY(-2px);
-        }
-
         .alert {
             padding: 1rem;
             border-radius: 10px;
@@ -242,17 +231,17 @@
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(37, 99, 235, 0.2);
+            text-align: center;
         }
 
         .chart-title {
-            text-align: center;
             color: #93c5fd;
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 1.5rem;
         }
 
-        .chart-actions {
+        .chart-navigation {
             text-align: center;
             margin: 1rem 0;
             padding: 1rem;
@@ -261,20 +250,8 @@
         }
 
         .heatmap-canvas {
-            width: 100%;
+            width: 1000px;
             height: 600px;
-            border-radius: 8px;
-            background: #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(37, 99, 235, 0.3);
-            display: block;
-            margin: 0 auto;
-        }
-
-        .static-image {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
             border-radius: 8px;
             background: #ffffff;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -339,36 +316,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        .download-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .image-card {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
-            backdrop-filter: blur(15px);
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-        }
-
-        .image-card h4 {
-            color: #93c5fd;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-size: 1.2rem;
-        }
-
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
@@ -411,8 +358,10 @@
                 padding: 1rem;
             }
 
-            .image-gallery {
-                grid-template-columns: 1fr;
+            .heatmap-canvas {
+                width: 100%;
+                max-width: 800px;
+                height: 500px;
             }
         }
     </style>
@@ -478,36 +427,29 @@
 
         <!-- Results Section -->
         <div id="resultsSection" class="hidden">
-            <!-- Chart Generation Controls -->
+            <!-- Chart Display Section -->
             <div class="results-section">
-                <h3>Chart Generation</h3>
-                <p>Generate high-quality heatmap images for each region</p>
-                <div style="text-align: center; margin: 1rem 0;">
-                    <button class="btn btn-primary" onclick="generateAllChartImages()">Generate All Chart Images</button>
-                    <button class="btn btn-success" onclick="downloadAllImages()">Download All Images (ZIP)</button>
+                <h3>District Heatmaps</h3>
+                <p>Navigate through district reporting status heatmaps</p>
+                
+                <div class="chart-navigation">
+                    <button class="btn btn-secondary" onclick="showPreviousChart()" id="prevBtn" disabled>← Previous</button>
+                    <span id="chartCounter" style="margin: 0 2rem; color: #93c5fd; font-weight: bold;">Chart 0 of 0</span>
+                    <button class="btn btn-secondary" onclick="showNextChart()" id="nextBtn" disabled>Next →</button>
                 </div>
             </div>
 
-            <!-- Charts Container (Hidden Canvas) -->
-            <div id="chartsContainer" style="display: none;"></div>
-            
-            <!-- Static Images Gallery -->
-            <div id="imageGallery" class="image-gallery hidden"></div>
+            <!-- Single Chart Container -->
+            <div id="singleChartContainer" class="chart-container hidden">
+                <div class="chart-title" id="currentChartTitle">Region Heatmap</div>
+                <canvas id="currentChart" class="heatmap-canvas"></canvas>
+            </div>
             
             <!-- Regional Statistics -->
             <div class="results-section">
                 <h3>Regional Statistics</h3>
                 <div class="data-table-container">
                     <table class="data-table" id="regionalStatsTable"></table>
-                </div>
-            </div>
-            
-            <!-- Download Section -->
-            <div class="results-section">
-                <h3>Download Results</h3>
-                <div class="download-section">
-                    <button class="btn btn-primary" onclick="downloadFullDataset()">Download Full Dataset (CSV)</button>
-                    <button class="btn btn-primary" onclick="downloadAnalysisReport()">Download Analysis Report</button>
                 </div>
             </div>
         </div>
@@ -522,7 +464,8 @@
         let currentData = null;
         let processedData = null;
         let analysisResults = null;
-        let generatedImages = {};
+        let currentChartIndex = 0;
+        let regions = [];
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
@@ -724,9 +667,17 @@
             try {
                 // Process data for analysis
                 analysisResults = createAnalysisResults(processedData);
+                regions = Object.keys(analysisResults.adm1Groups).sort();
                 
                 // Show results
                 showResults();
+                
+                // Initialize chart navigation
+                if (regions.length > 0) {
+                    currentChartIndex = 0;
+                    updateChartNavigation();
+                    displayCurrentChart();
+                }
                 
                 showAlert('Analysis completed!', 'success');
                 
@@ -791,80 +742,45 @@
             document.getElementById('resultsSection').classList.remove('hidden');
         }
 
-        function generateAllChartImages() {
-            if (!analysisResults) {
-                showAlert('Please generate analysis first', 'error');
-                return;
-            }
-
-            showAlert('Generating chart images...', 'info');
+        function updateChartNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const counter = document.getElementById('chartCounter');
             
-            // Clear previous images
-            generatedImages = {};
-            const imageGallery = document.getElementById('imageGallery');
-            imageGallery.innerHTML = '';
+            prevBtn.disabled = currentChartIndex <= 0;
+            nextBtn.disabled = currentChartIndex >= regions.length - 1;
             
-            // Create hidden canvas container
-            const chartsContainer = document.getElementById('chartsContainer');
-            chartsContainer.innerHTML = '';
-            
-            const regions = Object.keys(analysisResults.adm1Groups);
-            let processedCount = 0;
-
-            regions.forEach((adm1, index) => {
-                // Create hidden canvas
-                const canvas = document.createElement('canvas');
-                canvas.id = `chart-${adm1}`;
-                canvas.style.display = 'none';
-                chartsContainer.appendChild(canvas);
-                
-                // Generate heatmap
-                setTimeout(() => {
-                    generateRegionHeatmap(adm1, canvas, () => {
-                        // Convert canvas to image
-                        const imageDataUrl = canvas.toDataURL('image/png', 1.0);
-                        generatedImages[adm1] = imageDataUrl;
-                        
-                        // Create image card
-                        createImageCard(adm1, imageDataUrl);
-                        
-                        processedCount++;
-                        if (processedCount === regions.length) {
-                            imageGallery.classList.remove('hidden');
-                            showAlert('All chart images generated successfully!', 'success');
-                        }
-                    });
-                }, index * 100); // Stagger generation to avoid blocking
-            });
+            counter.textContent = `Chart ${currentChartIndex + 1} of ${regions.length}`;
         }
 
-        function createImageCard(regionName, imageDataUrl) {
-            const imageGallery = document.getElementById('imageGallery');
+        function showPreviousChart() {
+            if (currentChartIndex > 0) {
+                currentChartIndex--;
+                updateChartNavigation();
+                displayCurrentChart();
+            }
+        }
+
+        function showNextChart() {
+            if (currentChartIndex < regions.length - 1) {
+                currentChartIndex++;
+                updateChartNavigation();
+                displayCurrentChart();
+            }
+        }
+
+        function displayCurrentChart() {
+            if (!analysisResults || currentChartIndex < 0 || currentChartIndex >= regions.length) return;
             
-            const imageCard = document.createElement('div');
-            imageCard.className = 'image-card';
+            const regionName = regions[currentChartIndex];
+            const canvas = document.getElementById('currentChart');
+            const title = document.getElementById('currentChartTitle');
             
-            const title = document.createElement('h4');
-            title.textContent = `${regionName} - Reporting Status`;
-            imageCard.appendChild(title);
+            title.textContent = `${regionName} - Health Facility Reporting Status`;
             
-            const img = document.createElement('img');
-            img.src = imageDataUrl;
-            img.alt = `${regionName} Heatmap`;
-            img.className = 'static-image';
-            imageCard.appendChild(img);
-            
-            const actions = document.createElement('div');
-            actions.className = 'chart-actions';
-            
-            const downloadBtn = document.createElement('button');
-            downloadBtn.className = 'btn btn-primary';
-            downloadBtn.textContent = 'Download Image';
-            downloadBtn.onclick = () => downloadSingleImage(regionName, imageDataUrl);
-            actions.appendChild(downloadBtn);
-            
-            imageCard.appendChild(actions);
-            imageGallery.appendChild(imageCard);
+            generateRegionHeatmap(regionName, canvas, () => {
+                document.getElementById('singleChartContainer').classList.remove('hidden');
+            });
         }
 
         function generateRegionHeatmap(adm1, canvas, callback) {
@@ -900,20 +816,38 @@
             
             const ctx = canvas.getContext('2d');
             
-            // Calculate dimensions for better quality
-            const pixelRatio = window.devicePixelRatio || 1;
-            const cellSize = 20; // Larger cells for better quality
-            const baseWidth = Math.max(1200, dates.length * cellSize + 400);
-            const baseHeight = Math.max(800, hfIds.length * cellSize + 300);
+            // Dynamic canvas sizing based on data dimensions
+            const margins = {
+                top: 100,
+                bottom: 120, // Extra space for 90-degree labels
+                left: 150,   // Space for facility names
+                right: 50
+            };
             
-            // Set high-resolution canvas
-            canvas.width = baseWidth * pixelRatio * 2; // Double for extra quality
-            canvas.height = baseHeight * pixelRatio * 2;
-            canvas.style.width = baseWidth + 'px';
-            canvas.style.height = baseHeight + 'px';
+            // Calculate optimal cell size - minimum readable size with good visibility
+            const minCellWidth = 15;
+            const minCellHeight = 12;
+            const maxCellWidth = 35;
+            const maxCellHeight = 25;
             
-            // Scale context for high-DPI
-            ctx.scale(pixelRatio * 2, pixelRatio * 2);
+            // Dynamic cell sizing based on data volume
+            let cellWidth = Math.max(minCellWidth, Math.min(maxCellWidth, Math.max(20, 800 / dates.length)));
+            let cellHeight = Math.max(minCellHeight, Math.min(maxCellHeight, Math.max(15, 600 / hfIds.length)));
+            
+            // Calculate total canvas dimensions based on content
+            const heatmapWidth = cellWidth * dates.length;
+            const heatmapHeight = cellHeight * hfIds.length;
+            
+            const canvasWidth = heatmapWidth + margins.left + margins.right;
+            const canvasHeight = heatmapHeight + margins.top + margins.bottom;
+            
+            // Set dynamic canvas size
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            
+            // Update canvas CSS to maintain aspect ratio
+            canvas.style.width = Math.min(canvasWidth, 1200) + 'px';
+            canvas.style.height = 'auto';
             
             // Enable text smoothing
             ctx.textRenderingOptimization = 'optimizeQuality';
@@ -922,60 +856,55 @@
             
             // Clear canvas with white background
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, baseWidth, baseHeight);
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+            
+            // Calculate positions
+            const startX = margins.left;
+            const startY = margins.top;
             
             // Title
             ctx.fillStyle = '#1e293b';
-            ctx.font = 'bold 24px system-ui, -apple-system, sans-serif';
+            ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(`${adm1} - Health Facility Reporting Status`, baseWidth/2, 40);
+            ctx.fillText(`${adm1} - Health Facility Reporting Status`, canvasWidth/2, 25);
             
             // Legend
-            const legendY = 80;
-            const legendCenterX = baseWidth / 2;
+            const legendY = 50;
+            const legendCenterX = canvasWidth / 2;
             
             // Legend background
             ctx.fillStyle = 'rgba(240, 245, 255, 0.95)';
-            ctx.fillRect(legendCenterX - 150, legendY - 15, 300, 60);
+            ctx.fillRect(legendCenterX - 120, legendY - 10, 240, 35);
             ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = 2;
-            ctx.strokeRect(legendCenterX - 150, legendY - 15, 300, 60);
-            
-            // Legend title
-            ctx.fillStyle = '#1e293b';
-            ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('Legend', legendCenterX, legendY + 5);
+            ctx.lineWidth = 1;
+            ctx.strokeRect(legendCenterX - 120, legendY - 10, 240, 35);
             
             // Legend items
+            ctx.fillStyle = '#1e293b';
+            ctx.font = '12px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'left';
+            
             // No Report
             ctx.fillStyle = '#dc2626';
-            ctx.fillRect(legendCenterX - 110, legendY + 15, 30, 20);
+            ctx.fillRect(legendCenterX - 100, legendY, 20, 12);
             ctx.strokeStyle = '#991b1b';
             ctx.lineWidth = 1;
-            ctx.strokeRect(legendCenterX - 110, legendY + 15, 30, 20);
+            ctx.strokeRect(legendCenterX - 100, legendY, 20, 12);
             
             ctx.fillStyle = '#1e293b';
-            ctx.font = '16px system-ui, -apple-system, sans-serif';
-            ctx.textAlign = 'left';
-            ctx.fillText('No Report', legendCenterX - 75, legendY + 30);
+            ctx.fillText('No Report', legendCenterX - 75, legendY + 9);
             
             // Has Report
             ctx.fillStyle = '#059669';
-            ctx.fillRect(legendCenterX + 25, legendY + 15, 30, 20);
+            ctx.fillRect(legendCenterX + 10, legendY, 20, 12);
             ctx.strokeStyle = '#047857';
             ctx.lineWidth = 1;
-            ctx.strokeRect(legendCenterX + 25, legendY + 15, 30, 20);
+            ctx.strokeRect(legendCenterX + 10, legendY, 20, 12);
             
-            ctx.fillText('Has Report', legendCenterX + 60, legendY + 30);
+            ctx.fillStyle = '#1e293b';
+            ctx.fillText('Has Report', legendCenterX + 35, legendY + 9);
             
-            // Calculate heatmap dimensions
-            const startX = 200;
-            const startY = 160;
-            const cellWidth = cellSize;
-            const cellHeight = cellSize;
-            
-            // Draw heatmap
+            // Draw heatmap cells
             hfIds.forEach((hfId, hfIndex) => {
                 dates.forEach((date, dateIndex) => {
                     const status = hfData[hfId][date] || 0;
@@ -991,77 +920,75 @@
                     ctx.lineWidth = 1;
                     ctx.strokeRect(cellX, cellY, cellWidth - 1, cellHeight - 1);
                 });
-                
-                // HF labels (y-axis)
-                ctx.fillStyle = '#1e293b';
-                ctx.font = '12px system-ui, -apple-system, sans-serif';
-                ctx.textAlign = 'right';
-                const labelText = hfId.length > 15 ? hfId.substring(0, 13) + '..' : hfId;
-                ctx.fillText(labelText, startX - 10, startY + hfIndex * cellHeight + cellHeight/2 + 4);
             });
             
-            // Date labels (x-axis)
+            // Y-axis labels (Health Facilities) - show all or intelligently sample
             ctx.fillStyle = '#1e293b';
-            ctx.font = '11px system-ui, -apple-system, sans-serif';
-            ctx.textAlign = 'center';
+            ctx.font = `${Math.min(10, Math.max(8, cellHeight * 0.7))}px system-ui, -apple-system, sans-serif`;
+            ctx.textAlign = 'right';
+            
+            // For large number of facilities, show every nth label to avoid overlap
+            const maxYLabels = Math.floor(heatmapHeight / 14);
+            const yLabelStep = hfIds.length > maxYLabels ? Math.ceil(hfIds.length / maxYLabels) : 1;
+            
+            hfIds.forEach((hfId, hfIndex) => {
+                if (hfIndex % yLabelStep === 0 || hfIds.length <= 50) {
+                    const maxLabelLength = Math.floor(margins.left / 7); // Approximate chars that fit
+                    const labelText = hfId.length > maxLabelLength ? hfId.substring(0, maxLabelLength - 2) + '..' : hfId;
+                    const labelY = startY + hfIndex * cellHeight + cellHeight/2 + 3;
+                    ctx.fillText(labelText, startX - 8, labelY);
+                }
+            });
+            
+            // X-axis labels (Dates) - 90 degree rotation with step of 5 minimum
+            ctx.fillStyle = '#1e293b';
+            ctx.font = `${Math.min(10, Math.max(8, cellWidth * 0.4))}px system-ui, -apple-system, sans-serif`;
+            ctx.textAlign = 'left';
+            
+            // Calculate step - minimum 5, but adjust for readability
+            const minStep = 5;
+            const maxXLabels = Math.floor(heatmapWidth / 18); // Space needed for vertical text
+            const calculatedStep = Math.ceil(dates.length / maxXLabels);
+            const xLabelStep = Math.max(minStep, calculatedStep);
+            
             dates.forEach((date, dateIndex) => {
-                if (dateIndex % Math.max(1, Math.floor(dates.length / 15)) === 0) {
+                if (dateIndex % xLabelStep === 0) {
                     const labelX = startX + dateIndex * cellWidth + cellWidth/2;
-                    const labelY = startY + hfIds.length * cellHeight + 30;
+                    const labelY = startY + heatmapHeight + 25;
                     
                     ctx.save();
                     ctx.translate(labelX, labelY);
-                    ctx.rotate(-Math.PI/4);
+                    ctx.rotate(Math.PI/2); // 90 degree rotation
                     ctx.fillText(date, 0, 0);
                     ctx.restore();
                 }
             });
             
-            // Axis labels
+            // Axis titles
             ctx.fillStyle = '#64748b';
-            ctx.font = 'bold 16px system-ui, -apple-system, sans-serif';
+            ctx.font = 'bold 12px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
             
-            // Y-axis label
+            // Y-axis title
             ctx.save();
-            ctx.translate(40, startY + (hfIds.length * cellHeight) / 2);
+            ctx.translate(20, startY + heatmapHeight / 2);
             ctx.rotate(-Math.PI/2);
             ctx.fillText('Health Facilities', 0, 0);
             ctx.restore();
             
-            // X-axis label
-            ctx.fillText('Time Period (YYYY-MM)', startX + (dates.length * cellWidth) / 2, baseHeight - 30);
+            // X-axis title
+            ctx.fillText('Time Period (YYYY-MM)', startX + heatmapWidth / 2, canvasHeight - 15);
+            
+            // Add data info
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '10px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText(`${hfIds.length} facilities × ${dates.length} periods`, canvasWidth - 10, canvasHeight - 10);
             
             // Callback when done
             if (callback) {
                 setTimeout(callback, 100);
             }
-        }
-
-        function downloadSingleImage(regionName, imageDataUrl) {
-            const link = document.createElement('a');
-            link.download = `${regionName}_heatmap_${new Date().toISOString().slice(0, 10)}.png`;
-            link.href = imageDataUrl;
-            link.click();
-            showAlert(`${regionName} image downloaded!`, 'success');
-        }
-
-        function downloadAllImages() {
-            if (Object.keys(generatedImages).length === 0) {
-                showAlert('Please generate chart images first', 'error');
-                return;
-            }
-
-            showAlert('Preparing ZIP download...', 'info');
-            
-            // Since we can't use JSZip in this environment, we'll download them individually
-            Object.entries(generatedImages).forEach(([regionName, imageDataUrl], index) => {
-                setTimeout(() => {
-                    downloadSingleImage(regionName, imageDataUrl);
-                }, index * 500); // Stagger downloads
-            });
-            
-            showAlert('All images download started! Check your downloads folder.', 'success');
         }
 
         function showRegionalStatistics() {
@@ -1110,64 +1037,6 @@
                 }
             });
             table.appendChild(tbody);
-        }
-
-        function downloadFullDataset() {
-            if (!analysisResults) {
-                showAlert('No data to download', 'error');
-                return;
-            }
-            
-            const dataWithStatus = analysisResults.dataWithStatus;
-            const csv = convertToCSV(dataWithStatus);
-            downloadFile(csv, `full_dataset_with_status_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.csv`, 'text/csv');
-            showAlert('Dataset downloaded successfully!', 'success');
-        }
-
-        function downloadAnalysisReport() {
-            if (!analysisResults) {
-                showAlert('No analysis to download', 'error');
-                return;
-            }
-            
-            let report = 'Health Facility Reporting Analysis Report\n';
-            report += '==========================================\n\n';
-            report += `Generated: ${new Date().toISOString()}\n\n`;
-            
-            report += 'Regional Statistics:\n';
-            report += 'Region,Health Facilities,Months Reported,Total Months,Total Cases,Reporting Rate (%)\n';
-            
-            Object.entries(analysisResults.regionalStats).forEach(([region, stats]) => {
-                report += `${region},${stats.healthFacilities},${stats.monthsReported},${stats.totalMonths},${stats.totalCases},${stats.reportingRate}\n`;
-            });
-            
-            downloadFile(report, `analysis_report_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.txt`, 'text/plain');
-            showAlert('Analysis report downloaded successfully!', 'success');
-        }
-
-        function convertToCSV(data) {
-            if (!data || data.length === 0) return '';
-            
-            const headers = Object.keys(data[0]);
-            const csvContent = [
-                headers.join(','),
-                ...data.map(row => headers.map(header => {
-                    const value = row[header];
-                    return typeof value === 'string' && value.includes(',') ? `"${value}"` : value;
-                }).join(','))
-            ].join('\n');
-            
-            return csvContent;
-        }
-
-        function downloadFile(content, filename, mimeType) {
-            const blob = new Blob([content], { type: mimeType });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            URL.revokeObjectURL(url);
         }
     </script>
 </body>
