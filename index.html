@@ -232,6 +232,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(37, 99, 235, 0.2);
             text-align: center;
+            overflow-x: auto;
         }
 
         .chart-title {
@@ -250,51 +251,13 @@
         }
 
         .heatmap-canvas {
-            width: 1000px;
-            height: 600px;
             border-radius: 8px;
             background: #ffffff;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             border: 2px solid rgba(37, 99, 235, 0.3);
             display: block;
             margin: 0 auto;
-        }
-
-        .data-table-container {
-            max-height: 400px;
-            overflow: auto;
-            margin: 1rem 0;
-            border: 1px solid rgba(37, 99, 235, 0.3);
-            border-radius: 8px;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(15px);
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: transparent;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 10px 15px;
-            text-align: left;
-            border-bottom: 1px solid rgba(37, 99, 235, 0.2);
-            color: #e1effe;
-        }
-
-        .data-table th {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            font-weight: 600;
-            color: #93c5fd;
-        }
-
-        .data-table tr:hover {
-            background: rgba(37, 99, 235, 0.1);
+            max-width: 100%;
         }
 
         .hidden {
@@ -319,6 +282,7 @@
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
@@ -358,10 +322,8 @@
                 padding: 1rem;
             }
 
-            .heatmap-canvas {
-                width: 100%;
-                max-width: 800px;
-                height: 500px;
+            .chart-container {
+                padding: 1rem;
             }
         }
     </style>
@@ -429,8 +391,8 @@
         <div id="resultsSection" class="hidden">
             <!-- Chart Display Section -->
             <div class="results-section">
-                <h3>District Heatmaps</h3>
-                <p>Navigate through district reporting status heatmaps</p>
+                <h3>Regional Heatmaps</h3>
+                <p>Navigate through regional reporting status heatmaps</p>
                 
                 <div class="chart-navigation">
                     <button class="btn btn-secondary" onclick="showPreviousChart()" id="prevBtn" disabled>← Previous</button>
@@ -443,14 +405,6 @@
             <div id="singleChartContainer" class="chart-container hidden">
                 <div class="chart-title" id="currentChartTitle">Region Heatmap</div>
                 <canvas id="currentChart" class="heatmap-canvas"></canvas>
-            </div>
-            
-            <!-- Regional Statistics -->
-            <div class="results-section">
-                <h3>Regional Statistics</h3>
-                <div class="data-table-container">
-                    <table class="data-table" id="regionalStatsTable"></table>
-                </div>
             </div>
         </div>
     </div>
@@ -708,36 +662,13 @@
                 adm1Groups[adm1].push(row);
             });
             
-            // Create regional statistics
-            const regionalStats = {};
-            Object.keys(adm1Groups).forEach(adm1 => {
-                const groupData = adm1Groups[adm1];
-                const uniqueHFs = new Set(groupData.map(row => row.hf_uid)).size;
-                const monthsReported = groupData.filter(row => row.status === 1).length;
-                const totalMonths = groupData.length;
-                const totalCases = groupData.reduce((sum, row) => sum + selectedVariables.reduce((colSum, col) => colSum + (row[col] || 0), 0), 0);
-                const reportingRate = totalMonths > 0 ? ((monthsReported / totalMonths) * 100).toFixed(2) : 0;
-                
-                regionalStats[adm1] = {
-                    healthFacilities: uniqueHFs,
-                    monthsReported: monthsReported,
-                    totalMonths: totalMonths,
-                    totalCases: totalCases,
-                    reportingRate: reportingRate
-                };
-            });
-            
             return {
                 dataWithStatus: dataWithStatus,
-                adm1Groups: adm1Groups,
-                regionalStats: regionalStats
+                adm1Groups: adm1Groups
             };
         }
 
         function showResults() {
-            // Show regional statistics
-            showRegionalStatistics();
-            
             // Show results section
             document.getElementById('resultsSection').classList.remove('hidden');
         }
@@ -816,38 +747,41 @@
             
             const ctx = canvas.getContext('2d');
             
-            // Dynamic canvas sizing based on data dimensions
+            // Calculate dimensions based on data size
+            const minCellWidth = 3;
+            const minCellHeight = 3;
+            const maxCellWidth = 25;
+            const maxCellHeight = 20;
+            const minCanvasWidth = 800;
+            const maxCanvasWidth = 1200;
+            const minCanvasHeight = 400;
+            const maxCanvasHeight = 1500; // Increased maximum height
+            
+            // Layout margins
             const margins = {
                 top: 100,
-                bottom: 120, // Extra space for 90-degree labels
-                left: 150,   // Space for facility names
+                bottom: 80,
+                left: 120,
                 right: 50
             };
             
-            // Calculate optimal cell size - minimum readable size with good visibility
-            const minCellWidth = 15;
-            const minCellHeight = 12;
-            const maxCellWidth = 35;
-            const maxCellHeight = 25;
+            // Calculate optimal cell sizes
+            let cellWidth = Math.max(minCellWidth, Math.min(maxCellWidth, (maxCanvasWidth - margins.left - margins.right) / dates.length));
+            let cellHeight = Math.max(minCellHeight, Math.min(maxCellHeight, (maxCanvasHeight - margins.top - margins.bottom) / hfIds.length));
             
-            // Dynamic cell sizing based on data volume
-            let cellWidth = Math.max(minCellWidth, Math.min(maxCellWidth, Math.max(20, 800 / dates.length)));
-            let cellHeight = Math.max(minCellHeight, Math.min(maxCellHeight, Math.max(15, 600 / hfIds.length)));
-            
-            // Calculate total canvas dimensions based on content
+            // Calculate heatmap dimensions
             const heatmapWidth = cellWidth * dates.length;
             const heatmapHeight = cellHeight * hfIds.length;
             
-            const canvasWidth = heatmapWidth + margins.left + margins.right;
-            const canvasHeight = heatmapHeight + margins.top + margins.bottom;
+            // Calculate total canvas dimensions
+            const canvasWidth = Math.max(minCanvasWidth, heatmapWidth + margins.left + margins.right);
+            const canvasHeight = Math.max(minCanvasHeight, heatmapHeight + margins.top + margins.bottom);
             
-            // Set dynamic canvas size
+            // Set canvas size
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
-            
-            // Update canvas CSS to maintain aspect ratio
-            canvas.style.width = Math.min(canvasWidth, 1200) + 'px';
-            canvas.style.height = 'auto';
+            canvas.style.width = canvasWidth + 'px';
+            canvas.style.height = canvasHeight + 'px';
             
             // Enable text smoothing
             ctx.textRenderingOptimization = 'optimizeQuality';
@@ -858,9 +792,9 @@
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvasWidth, canvasHeight);
             
-            // Calculate positions
-            const startX = margins.left;
-            const startY = margins.top;
+            // Center the heatmap in available space
+            const startX = margins.left + (canvasWidth - margins.left - margins.right - heatmapWidth) / 2;
+            const startY = margins.top + (canvasHeight - margins.top - margins.bottom - heatmapHeight) / 2;
             
             // Title
             ctx.fillStyle = '#1e293b';
@@ -915,50 +849,47 @@
                     ctx.fillStyle = status === 1 ? '#059669' : '#dc2626';
                     ctx.fillRect(cellX, cellY, cellWidth - 1, cellHeight - 1);
                     
-                    // Cell border
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(cellX, cellY, cellWidth - 1, cellHeight - 1);
+                    // Cell border for larger cells
+                    if (cellWidth > 5 && cellHeight > 5) {
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 0.5;
+                        ctx.strokeRect(cellX, cellY, cellWidth - 1, cellHeight - 1);
+                    }
                 });
             });
             
-            // Y-axis labels (Health Facilities) - show all or intelligently sample
+            // Y-axis labels (Health Facilities)
             ctx.fillStyle = '#1e293b';
-            ctx.font = `${Math.min(10, Math.max(8, cellHeight * 0.7))}px system-ui, -apple-system, sans-serif`;
+            ctx.font = '9px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'right';
             
-            // For large number of facilities, show every nth label to avoid overlap
-            const maxYLabels = Math.floor(heatmapHeight / 14);
-            const yLabelStep = hfIds.length > maxYLabels ? Math.ceil(hfIds.length / maxYLabels) : 1;
+            const maxHFLabels = Math.floor(heatmapHeight / 12); // Ensure labels don't overlap
+            const hfLabelStep = Math.max(1, Math.ceil(hfIds.length / maxHFLabels));
             
             hfIds.forEach((hfId, hfIndex) => {
-                if (hfIndex % yLabelStep === 0 || hfIds.length <= 50) {
-                    const maxLabelLength = Math.floor(margins.left / 7); // Approximate chars that fit
-                    const labelText = hfId.length > maxLabelLength ? hfId.substring(0, maxLabelLength - 2) + '..' : hfId;
+                if (hfIndex % hfLabelStep === 0) {
+                    const labelText = hfId.length > 15 ? hfId.substring(0, 13) + '..' : hfId;
                     const labelY = startY + hfIndex * cellHeight + cellHeight/2 + 3;
-                    ctx.fillText(labelText, startX - 8, labelY);
+                    ctx.fillText(labelText, startX - 5, labelY);
                 }
             });
             
-            // X-axis labels (Dates) - 90 degree rotation with step of 5 minimum
+            // X-axis labels (Dates)
             ctx.fillStyle = '#1e293b';
-            ctx.font = `${Math.min(10, Math.max(8, cellWidth * 0.4))}px system-ui, -apple-system, sans-serif`;
-            ctx.textAlign = 'left';
+            ctx.font = '9px system-ui, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
             
-            // Calculate step - minimum 5, but adjust for readability
-            const minStep = 5;
-            const maxXLabels = Math.floor(heatmapWidth / 18); // Space needed for vertical text
-            const calculatedStep = Math.ceil(dates.length / maxXLabels);
-            const xLabelStep = Math.max(minStep, calculatedStep);
+            const maxDateLabels = Math.floor(heatmapWidth / 50); // Account for rotated text width
+            const dateLabelStep = Math.max(1, Math.ceil(dates.length / maxDateLabels));
             
             dates.forEach((date, dateIndex) => {
-                if (dateIndex % xLabelStep === 0) {
+                if (dateIndex % dateLabelStep === 0) {
                     const labelX = startX + dateIndex * cellWidth + cellWidth/2;
-                    const labelY = startY + heatmapHeight + 25;
+                    const labelY = startY + heatmapHeight + 15;
                     
                     ctx.save();
                     ctx.translate(labelX, labelY);
-                    ctx.rotate(Math.PI/2); // 90 degree rotation
+                    ctx.rotate(-Math.PI/4); // 45 degree rotation for better fit
                     ctx.fillText(date, 0, 0);
                     ctx.restore();
                 }
@@ -977,7 +908,8 @@
             ctx.restore();
             
             // X-axis title
-            ctx.fillText('Time Period (YYYY-MM)', startX + heatmapWidth / 2, canvasHeight - 15);
+            const xAxisTitleY = Math.min(canvasHeight - 15, startY + heatmapHeight + 60);
+            ctx.fillText('Time Period (YYYY-MM)', startX + heatmapWidth / 2, xAxisTitleY);
             
             // Add data info
             ctx.fillStyle = '#6b7280';
@@ -989,54 +921,6 @@
             if (callback) {
                 setTimeout(callback, 100);
             }
-        }
-
-        function showRegionalStatistics() {
-            const table = document.getElementById('regionalStatsTable');
-            table.innerHTML = '';
-            
-            if (!analysisResults) return;
-            
-            const statsToShow = analysisResults.regionalStats;
-            
-            // Create header
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
-            const headers = ['Region', 'Health Facilities', 'Months Reported', 'Total Months', 'Total Cases', 'Reporting Rate (%)'];
-            
-            headers.forEach(header => {
-                const th = document.createElement('th');
-                th.textContent = header;
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-            
-            // Create body
-            const tbody = document.createElement('tbody');
-            Object.entries(statsToShow).forEach(([region, stats]) => {
-                if (stats) {
-                    const tr = document.createElement('tr');
-                    
-                    const values = [
-                        region,
-                        stats.healthFacilities,
-                        stats.monthsReported,
-                        stats.totalMonths,
-                        stats.totalCases.toLocaleString(),
-                        stats.reportingRate + '%'
-                    ];
-                    
-                    values.forEach(value => {
-                        const td = document.createElement('td');
-                        td.textContent = value;
-                        tr.appendChild(td);
-                    });
-                    
-                    tbody.appendChild(tr);
-                }
-            });
-            table.appendChild(tbody);
         }
     </script>
 </body>
