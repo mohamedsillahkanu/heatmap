@@ -243,7 +243,7 @@
 
         .heatmap-canvas {
             width: 100%;
-            height: 800px;
+            height: 600px;
             border-radius: 8px;
             background: #ffffff;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -774,10 +774,11 @@
             
             const ctx = canvas.getContext('2d');
             
-            // Calculate optimal dimensions for high-resolution display
+            // Calculate compact dimensions for 15x15 pixel cells
             const pixelRatio = window.devicePixelRatio || 1;
-            const baseWidth = Math.max(1400, dates.length * 35 + 350);
-            const baseHeight = Math.max(800, hfIds.length * 35 + 300);
+            const cellSize = 15; // Fixed 15x15 pixel cells
+            const baseWidth = Math.max(800, dates.length * cellSize + 300);
+            const baseHeight = Math.max(600, hfIds.length * cellSize + 250);
             
             // Set display size (CSS pixels)
             canvas.style.width = baseWidth + 'px';
@@ -837,50 +838,52 @@
             
             ctx.fillText('Has Report', legendCenterX + 45, legendY + 28);
             
-            // Calculate enhanced dimensions for heatmap
-            const startX = 75;
-            const startY = 50;
-            const cellWidth = Math.max(8, (baseWidth - 100) / dates.length);
-            const cellHeight = Math.max(9, (baseHeight - 75) / hfIds.length);
+            // Calculate compact dimensions for heatmap with 15x15 cells
+            const startX = 150;
+            const startY = 120;
+            const cellWidth = cellSize;
+            const cellHeight = cellSize;
             
-            // Draw enhanced heatmap with improved visibility
+            // Draw compact heatmap with improved visibility
             hfIds.forEach((hfId, hfIndex) => {
                 dates.forEach((date, dateIndex) => {
                     const status = hfData[hfId][date] || 0;
                     const cellX = startX + dateIndex * cellWidth;
                     const cellY = startY + hfIndex * cellHeight;
                     
-                    // Enhanced colors with better contrast
+                    // Compact cells with clean borders
                     ctx.fillStyle = status === 1 ? '#059669' : '#dc2626';
-                    ctx.fillRect(cellX, cellY, cellWidth - 2, cellHeight - 2);
+                    ctx.fillRect(cellX, cellY, cellWidth - 1, cellHeight - 1);
                     
-                    // Add subtle borders for better cell definition
+                    // Subtle borders for cell definition
                     ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(cellX, cellY, cellWidth - 2, cellHeight - 2);
+                    ctx.lineWidth = 0.5;
+                    ctx.strokeRect(cellX, cellY, cellWidth - 1, cellHeight - 1);
                 });
                 
-                // Enhanced HF labels with better readability
+                // Compact HF labels
                 ctx.fillStyle = '#1e293b';
-                ctx.font = 'bold 12px system-ui, -apple-system, sans-serif';
+                ctx.font = '10px system-ui, -apple-system, sans-serif';
                 ctx.textAlign = 'right';
-                const labelText = hfId.length > 18 ? hfId.substring(0, 16) + '...' : hfId;
-                ctx.fillText(labelText, startX - 15, startY + hfIndex * cellHeight + cellHeight/2 + 5);
+                const labelText = hfId.length > 12 ? hfId.substring(0, 10) + '..' : hfId;
+                ctx.fillText(labelText, startX - 8, startY + hfIndex * cellHeight + cellHeight/2 + 3);
             });
             
-            // Enhanced x-axis date labels with better formatting and readability
+            // Compact x-axis date labels
             ctx.fillStyle = '#1e293b';
-            ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
+            ctx.font = '9px system-ui, -apple-system, sans-serif';
             ctx.textAlign = 'center';
             dates.forEach((date, dateIndex) => {
-                const labelX = startX + dateIndex * cellWidth + cellWidth/2;
-                const labelY = startY + hfIds.length * cellHeight + 30;
-                
-                ctx.save();
-                ctx.translate(labelX, labelY);
-                ctx.rotate(-Math.PI/2);
-                ctx.fillText(date, 0, 0);
-                ctx.restore();
+                if (dateIndex % Math.max(1, Math.floor(dates.length / 12)) === 0) { // Show fewer labels to avoid overlap
+                    const labelX = startX + dateIndex * cellWidth + cellWidth/2;
+                    const labelY = startY + hfIds.length * cellHeight + 25;
+                    
+                    ctx.save();
+                    ctx.translate(labelX, labelY);
+                    ctx.rotate(-Math.PI/4);
+                    ctx.fillText(date, 0, 0);
+                    ctx.restore();
+                }
             });
             
             // Add title for the chart with enhanced styling
@@ -911,6 +914,11 @@
             
             if (!analysisResults) return;
             
+            const selectedDistrict = document.getElementById('districtSelect')?.value || 'all';
+            const statsToShow = selectedDistrict === 'all' ? 
+                analysisResults.regionalStats : 
+                { [selectedDistrict]: analysisResults.regionalStats[selectedDistrict] };
+            
             // Create header
             const thead = document.createElement('thead');
             const headerRow = document.createElement('tr');
@@ -926,25 +934,27 @@
             
             // Create body
             const tbody = document.createElement('tbody');
-            Object.entries(analysisResults.regionalStats).forEach(([region, stats]) => {
-                const tr = document.createElement('tr');
-                
-                const values = [
-                    region,
-                    stats.healthFacilities,
-                    stats.monthsReported,
-                    stats.totalMonths,
-                    stats.totalCases.toLocaleString(),
-                    stats.reportingRate + '%'
-                ];
-                
-                values.forEach(value => {
-                    const td = document.createElement('td');
-                    td.textContent = value;
-                    tr.appendChild(td);
-                });
-                
-                tbody.appendChild(tr);
+            Object.entries(statsToShow).forEach(([region, stats]) => {
+                if (stats) { // Check if stats exist for this region
+                    const tr = document.createElement('tr');
+                    
+                    const values = [
+                        region,
+                        stats.healthFacilities,
+                        stats.monthsReported,
+                        stats.totalMonths,
+                        stats.totalCases.toLocaleString(),
+                        stats.reportingRate + '%'
+                    ];
+                    
+                    values.forEach(value => {
+                        const td = document.createElement('td');
+                        td.textContent = value;
+                        tr.appendChild(td);
+                    });
+                    
+                    tbody.appendChild(tr);
+                }
             });
             table.appendChild(tbody);
         }
