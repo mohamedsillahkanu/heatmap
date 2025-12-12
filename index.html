@@ -3,443 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Facility Reporting Analysis - Blue Dark Theme</title>
+    <title>ICF-SL Health Facility Reporting Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #e1effe;
-            background: linear-gradient(135deg, #0a0e1a 0%, #0f1629 25%, #1a237e 75%, #1565c0 100%);
-            min-height: 100vh;
-        }
-
-        .main-header {
-            text-align: center;
-            padding: 3rem 0;
-            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 25%, #1e3a8a 75%, #2563eb 100%);
-            color: white;
-            margin-bottom: 2rem;
-            border-radius: 0 0 1rem 1rem;
-            box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
-            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-        }
-
-        .main-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-        }
-
-        .main-header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .upload-section {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
-            backdrop-filter: blur(15px);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            margin: 2rem 0;
-            border-left: 4px solid #2563eb;
-            border: 1px solid rgba(37, 99, 235, 0.2);
-        }
-
-        .upload-section h3 {
-            color: #93c5fd;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .upload-section p {
-            color: #9ca3af;
-            margin-bottom: 1rem;
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            display: inline-block;
-            margin: 1rem 0;
-        }
-
-        .file-input {
-            display: inline-block;
-            padding: 15px 30px;
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-            color: white;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(29, 78, 216, 0.4);
-        }
-
-        .file-input:hover {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(29, 78, 216, 0.6);
-        }
-
-        .file-input input[type="file"] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .metric-card {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
-            backdrop-filter: blur(15px);
-            padding: 1.5rem;
-            text-align: center;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            border-top: 4px solid #2563eb;
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.3);
-        }
-
-        .metric-card h4 {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .metric-card .metric-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #93c5fd;
-            margin-bottom: 0.5rem;
-        }
-
-        .metric-card p {
-            color: #9ca3af;
-            font-size: 0.85rem;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin: 0.5rem 0.5rem 0.5rem 0;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(29, 78, 216, 0.4);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(29, 78, 216, 0.6);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(75, 85, 99, 0.4);
-        }
-
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
-            transform: translateY(-2px);
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            font-weight: 500;
-            backdrop-filter: blur(15px);
-        }
-
-        .alert-success {
-            background: linear-gradient(135deg, rgba(5, 150, 105, 0.2) 0%, rgba(4, 120, 87, 0.2) 100%);
-            border-left: 4px solid #059669;
-            color: #6ee7b7;
-        }
-
-        .alert-error {
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
-            border-left: 4px solid #dc2626;
-            color: #fca5a5;
-        }
-
-        .alert-info {
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(2, 132, 199, 0.2) 100%);
-            border-left: 4px solid #0ea5e9;
-            color: #7dd3fc;
-        }
-
-        .results-section {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
-            backdrop-filter: blur(15px);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            margin: 2rem 0;
-            border: 1px solid rgba(37, 99, 235, 0.2);
-        }
-
-        .results-section h3 {
-            color: #93c5fd;
-            margin-bottom: 1rem;
-        }
-
-        .chart-container {
-            margin: 2rem 0;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
-            backdrop-filter: blur(15px);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            text-align: center;
-            overflow-x: auto;
-        }
-
-        .chart-title {
-            color: #93c5fd;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-        }
-
-        .chart-navigation {
-            text-align: center;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 8px;
-        }
-
-        .heatmap-canvas {
-            border-radius: 8px;
-            background: #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(37, 99, 235, 0.3);
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .loading-spinner {
-            border: 4px solid rgba(37, 99, 235, 0.2);
-            border-top: 4px solid #2563eb;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.8);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-        }
-
-        .footer {
-            text-align: center;
-            color: #6b7280;
-            padding: 2rem;
-            margin-top: 3rem;
-            border-top: 1px solid rgba(37, 99, 235, 0.2);
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
-            backdrop-filter: blur(10px);
-        }
-
-        @media (max-width: 768px) {
-            .main-header h1 {
-                font-size: 2rem;
-            }
-            
-            .container {
-                padding: 0 10px;
-            }
-            
-            .upload-section {
-                padding: 1rem;
-            }
-
-            .chart-container {
-                padding: 1rem;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { margin: 0; padding: 20px; background-color: #ffffff; font-family: 'Oswald', Arial, sans-serif; color: #000000; font-weight: 500; }
+        .page-container { width: 100%; max-width: 1400px; margin: 0 auto; }
+        .page-header { background-color: #004080; color: #ffffff; padding: 25px 30px; text-align: center; margin-bottom: 15px; border-radius: 8px 8px 0 0; }
+        .logo-row { display: flex; justify-content: center; align-items: center; gap: 30px; margin-bottom: 15px; }
+        .logo-box { background: #ffffff; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; }
+        .logo-box img { width: 100px; height: auto; border-radius: 6px; }
+        .page-header h3 { margin: 12px 0 5px; font-size: 14px; font-weight: 700; letter-spacing: 1px; color: #ffffff; }
+        .page-header .tagline { margin: 0; font-size: 10px; font-weight: 500; color: #ffffff; }
+        .page-header h1 { margin: 20px 0 10px; font-size: 24px; font-weight: 700; color: #ffffff; letter-spacing: 1px; }
+        .page-header .subtitle { font-size: 14px; color: #ffffff; font-weight: 500; }
+        .content-card { border: 4px double #004080; border-radius: 12px; padding: 12px; background-color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-bottom: 15px; }
+        .content-inner { padding: 25px; }
+        .upload-section { background: #f8f9fa; padding: 2rem; border-radius: 8px; border: 2px dashed #004080; text-align: center; margin: 1.5rem 0; transition: all 0.3s ease; }
+        .upload-section:hover { border-color: #0056b3; background: #e7f3ff; }
+        .upload-section h3 { color: #004080; margin-bottom: 1rem; font-size: 18px; font-weight: 700; }
+        .upload-section p { color: #000000; font-weight: 500; font-size: 14px; }
+        .file-input-wrapper { position: relative; display: inline-block; cursor: pointer; background: #004080; color: white; padding: 14px 24px; border-radius: 6px; border: 2px solid #004080; font-size: 14px; font-weight: 700; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Oswald', Arial, sans-serif; margin-top: 1rem; }
+        .file-input-wrapper:hover { background: #0056b3; border-color: #0056b3; }
+        .file-input-wrapper input[type="file"] { position: absolute; left: -9999px; }
+        .section-header { background-color: #004080; color: #ffffff; padding: 15px 20px; margin-bottom: 20px; border-radius: 6px; display: flex; align-items: center; gap: 15px; }
+        .section-icon { background: #ffffff; color: #004080; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+        .section-title { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .stats-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); text-align: center; border: 2px solid #004080; transition: all 0.2s; }
+        .stats-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0, 64, 128, 0.2); }
+        .stats-card h4 { color: #666; font-size: 12px; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .stats-card .metric-value { font-size: 2.5rem; color: #004080; margin-bottom: 0.5rem; font-weight: 700; }
+        .stats-card p { color: #666; font-size: 12px; }
+        .btn { padding: 14px 24px; border: 2px solid #004080; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'Oswald', Arial, sans-serif; transition: all 0.2s; margin: 5px; }
+        .btn-primary { background: #004080; color: #ffffff; }
+        .btn-primary:hover { background: #0056b3; border-color: #0056b3; }
+        .btn-secondary { background: #ffffff; color: #004080; }
+        .btn-secondary:hover { background: #004080; color: #ffffff; }
+        .btn-gold { background: #ffc107; color: #000000; border-color: #ffc107; }
+        .btn-gold:hover { background: #e0a800; border-color: #e0a800; }
+        .btn-success { background: #28a745; color: #ffffff; border-color: #28a745; }
+        .btn-success:hover { background: #218838; border-color: #218838; }
+        .alert { padding: 1rem; border-radius: 6px; margin: 1rem 0; font-weight: 500; }
+        .alert-success { background: #d4edda; border: 2px solid #28a745; color: #155724; }
+        .alert-error { background: #f8d7da; border: 2px solid #dc3545; color: #721c24; }
+        .alert-info { background: #e7f3ff; border: 2px solid #004080; color: #004080; }
+        .info-message { background: #e7f3ff; color: #004080; padding: 1rem; border-radius: 6px; border: 2px solid #004080; margin: 1rem 0; font-weight: 500; }
+        .hidden { display: none !important; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: #004080; }
+        .form-control { width: 100%; padding: 0.75rem 1rem; border: 2px solid #004080; border-radius: 6px; font-size: 14px; background: #ffffff; color: #000000; font-family: 'Oswald', Arial, sans-serif; font-weight: 500; }
+        .form-control:focus { outline: none; border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0, 64, 128, 0.1); }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+        .chart-container { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 2px solid #004080; margin: 1.5rem 0; text-align: center; overflow-x: auto; }
+        .chart-title { color: #004080; font-size: 18px; font-weight: 700; margin-bottom: 1rem; }
+        .heatmap-canvas { border-radius: 8px; background: #ffffff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border: 2px solid #004080; display: block; margin: 0 auto; max-width: 100%; }
+        .loading-spinner { border: 4px solid #e7f3ff; border-top: 4px solid #004080; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .feature-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 2px solid #004080; }
+        .feature-card h4 { color: #004080; margin-bottom: 1rem; font-size: 16px; font-weight: 700; text-transform: uppercase; }
+        .feature-card ol, .feature-card ul { color: #000000; line-height: 1.8; padding-left: 1.5rem; }
+        .feature-card li { margin-bottom: 0.5rem; font-weight: 500; font-size: 14px; }
+        .feature-card strong { color: #004080; }
+        .column-selection-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 2px solid #004080; margin: 1rem 0; }
+        .column-selection-card h4 { color: #004080; margin-bottom: 1rem; font-size: 16px; font-weight: 700; }
+        .page-footer { background-color: #004080; color: #ffffff; padding: 20px 30px; text-align: center; font-size: 13px; line-height: 1.7; font-weight: 500; border-radius: 0 0 8px 8px; }
+        .page-footer p { margin: 6px 0 0; font-size: 12px; color: #ffffff; }
+        .palette-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0; }
+        .palette-option { background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 2px solid #ddd; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .palette-option:hover { border-color: #004080; }
+        .palette-option.selected { border-color: #004080; background: #e7f3ff; box-shadow: 0 0 0 3px rgba(0, 64, 128, 0.2); }
+        .palette-option input[type="radio"] { display: none; }
+        .palette-preview { display: flex; justify-content: center; gap: 5px; margin-bottom: 0.5rem; }
+        .palette-preview .color-box { width: 30px; height: 20px; border-radius: 3px; border: 1px solid #ccc; }
+        .palette-name { font-size: 12px; font-weight: 700; color: #004080; }
+        .customization-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 2px solid #004080; margin: 1rem 0; }
+        .customization-card h4 { color: #004080; margin-bottom: 1rem; font-size: 16px; font-weight: 700; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f8f9fa; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #004080; border-radius: 4px; }
+        @media (max-width: 768px) { body { padding: 10px; } .content-inner { padding: 15px; } .page-header h1 { font-size: 20px; } .stats-grid { grid-template-columns: 1fr 1fr; } .form-row { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <div class="main-header">
-        <h1>Health Facility Reporting Status Analysis</h1>
-        <p>Simplified visualization for health facility reporting patterns by region</p>
-    </div>
-
-    <div class="container">
-        <!-- Upload Section -->
-        <div class="upload-section">
-            <h3>Data Upload</h3>
-            <p>Upload your health facility data file (CSV, Excel). Required columns: hf_uid, allout, susp, test, conf, maltreat, Date (or month/year)</p>
-            
-            <div class="file-input-wrapper">
-                <label class="file-input">
-                    Choose File
-                    <input type="file" id="fileInput" accept=".csv,.xlsx,.xls">
-                </label>
+    <div class="page-container">
+        <div class="page-header">
+            <div class="logo-row">
+                <div class="logo-box">
+                    <img src="https://github.com/mohamedsillahkanu/gdp-dashboard-2/raw/6c7463b0d5c3be150aafae695a4bcbbd8aeb1499/ICF-SL.jpg" alt="ICF-SL Logo">
+                </div>
             </div>
-            
-            <div id="uploadProgress" class="hidden">
-                <div class="loading-spinner"></div>
-                <p>Processing your file...</p>
+            <h3>Informatics Consultancy Firm-Sierra Leone<br>(ICF-SL)</h3>
+            <p class="tagline"><em>Driving Data-Driven Solutions for Health and Development</em></p>
+            <h1>HEALTH FACILITY REPORTING ANALYSIS</h1>
+            <p class="subtitle">Visualize health facility reporting patterns</p>
+        </div>
+
+        <div class="content-card">
+            <div class="content-inner">
+                <div id="alertContainer"></div>
+
+                <!-- Upload Section -->
+                <div id="uploadSection">
+                    <div class="upload-section">
+                        <h3>UPLOAD YOUR DATA FILE</h3>
+                        <p>Upload a CSV or Excel file with health facility reporting data</p>
+                        <label class="file-input-wrapper">
+                            Choose File
+                            <input type="file" id="fileInput" accept=".csv,.xlsx,.xls">
+                        </label>
+                        <div id="uploadProgress" class="hidden">
+                            <div class="loading-spinner"></div>
+                            <p>Processing your file...</p>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <span class="section-icon">?</span>
+                        <span class="section-title">HOW IT WORKS</span>
+                    </div>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>Analysis Process</h4>
+                            <ol>
+                                <li><strong>Upload File:</strong> CSV or Excel file</li>
+                                <li><strong>Select Columns:</strong> Map 4 required columns</li>
+                                <li><strong>Customize:</strong> Colors, title, labels</li>
+                                <li><strong>Generate Heatmap:</strong> Overall view</li>
+                            </ol>
+                        </div>
+                        <div class="feature-card">
+                            <h4>Required Columns</h4>
+                            <ul>
+                                <li><strong>hf_uid:</strong> HF001, HF002, FAC_123</li>
+                                <li><strong>year:</strong> 2023, 2024, 2025</li>
+                                <li><strong>month:</strong> 1-12 or 01-12</li>
+                                <li><strong>report:</strong> 1 (yes) or 0 (no)</li>
+                            </ul>
+                        </div>
+                        <div class="feature-card">
+                            <h4>Features</h4>
+                            <ul>
+                                <li><strong>8 colorblind-friendly</strong> palettes</li>
+                                <li><strong>7 standard</strong> color palettes</li>
+                                <li>Custom title & axis labels</li>
+                                <li>Reporting rate statistics</li>
+                                <li>Download as PNG image</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column Selection Section -->
+                <div id="columnSelectionSection" class="hidden">
+                    <div class="section-header">
+                        <span class="section-icon">⚙</span>
+                        <span class="section-title">SELECT COLUMNS</span>
+                    </div>
+
+                    <div class="info-message">
+                        <strong>Map your data columns:</strong> Select which columns from your dataset correspond to each required field.
+                    </div>
+
+                    <div class="column-selection-card">
+                        <h4>Required Column Mappings</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hfuidColumn">Health Facility ID (hf_uid)</label>
+                                <select id="hfuidColumn" class="form-control">
+                                    <option value="">-- Select Column --</option>
+                                </select>
+                                <small style="color: #666; font-size: 12px;">Example: HF001, HF002, FAC_123</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="yearColumn">Year Column</label>
+                                <select id="yearColumn" class="form-control">
+                                    <option value="">-- Select Column --</option>
+                                </select>
+                                <small style="color: #666; font-size: 12px;">Example: 2023, 2024, 2025</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="monthColumn">Month Column</label>
+                                <select id="monthColumn" class="form-control">
+                                    <option value="">-- Select Column --</option>
+                                </select>
+                                <small style="color: #666; font-size: 12px;">Example: 1-12 or 01-12</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="reportColumn">Report Status Column</label>
+                                <select id="reportColumn" class="form-control">
+                                    <option value="">-- Select Column --</option>
+                                </select>
+                                <small style="color: #666; font-size: 12px;">Example: 1 = reported, 0 = not reported</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 1.5rem;">
+                        <button class="btn btn-gold" onclick="processColumnSelection()">Apply Column Selection</button>
+                        <button class="btn btn-secondary" onclick="resetFile()">Upload Different File</button>
+                    </div>
+                </div>
+
+                <!-- Data Summary Section -->
+                <div id="dataSummary" class="hidden">
+                    <div class="section-header">
+                        <span class="section-icon">📊</span>
+                        <span class="section-title">DATA SUMMARY</span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stats-card">
+                            <h4>Health Facilities</h4>
+                            <div class="metric-value" id="totalHFs">0</div>
+                            <p>Unique facilities</p>
+                        </div>
+                        <div class="stats-card">
+                            <h4>Time Periods</h4>
+                            <div class="metric-value" id="totalMonths">0</div>
+                            <p>Unique months</p>
+                        </div>
+                        <div class="stats-card">
+                            <h4>Total Records</h4>
+                            <div class="metric-value" id="totalRecords">0</div>
+                            <p>Data points</p>
+                        </div>
+                        <div class="stats-card">
+                            <h4>Reporting Rate</h4>
+                            <div class="metric-value" id="reportingRate">0%</div>
+                            <p>Overall rate</p>
+                        </div>
+                    </div>
+
+                    <!-- Color Palette Selection -->
+                    <div class="customization-card">
+                        <h4>🎨 Select Color Palette <span style="font-size: 12px; color: #28a745; font-weight: 500;">(♿ = Colorblind-Friendly)</span></h4>
+                        <div class="palette-selector" id="paletteSelector"></div>
+                    </div>
+
+                    <!-- Custom Labels -->
+                    <div class="customization-card">
+                        <h4>📝 Customize Labels</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="chartTitle">Chart Title</label>
+                                <input type="text" id="chartTitle" class="form-control" value="Health Facility Reporting Status" placeholder="Enter chart title">
+                            </div>
+                            <div class="form-group">
+                                <label for="xAxisLabel">X-Axis Label (Time)</label>
+                                <input type="text" id="xAxisLabel" class="form-control" value="Time Period (YYYY-MM)" placeholder="Enter X-axis label">
+                            </div>
+                            <div class="form-group">
+                                <label for="yAxisLabel">Y-Axis Label (Facilities)</label>
+                                <input type="text" id="yAxisLabel" class="form-control" value="Health Facilities (High → Low Reporting)" placeholder="Enter Y-axis label">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reportedLabel">Reported Label (Status = 1)</label>
+                                <input type="text" id="reportedLabel" class="form-control" value="Reported" placeholder="Label for reported">
+                            </div>
+                            <div class="form-group">
+                                <label for="notReportedLabel">Not Reported Label (Status = 0)</label>
+                                <input type="text" id="notReportedLabel" class="form-control" value="No Report" placeholder="Label for not reported">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <button class="btn btn-primary" onclick="generateAnalysis()">Generate Heatmap</button>
+                        <button class="btn btn-secondary" onclick="backToColumnSelection()">Change Column Selection</button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsSection" class="hidden">
+                    <div class="section-header">
+                        <span class="section-icon">📈</span>
+                        <span class="section-title">REPORTING STATUS HEATMAP</span>
+                    </div>
+
+                    <div id="singleChartContainer" class="chart-container">
+                        <div class="chart-title" id="currentChartTitle">Health Facility Reporting Status</div>
+                        <canvas id="currentChart" class="heatmap-canvas"></canvas>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 1.5rem;">
+                        <button class="btn btn-success" onclick="downloadHeatmap()">Download Heatmap Image</button>
+                        <button class="btn btn-secondary" onclick="backToSummary()">Back to Summary</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Alerts Container -->
-        <div id="alertContainer"></div>
-
-        <!-- Data Summary -->
-        <div id="dataSummary" class="hidden">
-            <div class="metric-grid">
-                <div class="metric-card">
-                    <h4>Health Facilities</h4>
-                    <div class="metric-value" id="totalHFs">0</div>
-                    <p>Unique facilities</p>
-                </div>
-                <div class="metric-card">
-                    <h4>Time Periods</h4>
-                    <div class="metric-value" id="totalMonths">0</div>
-                    <p>Unique months</p>
-                </div>
-                <div class="metric-card">
-                    <h4>Total Records</h4>
-                    <div class="metric-value" id="totalRecords">0</div>
-                    <p>Data points</p>
-                </div>
-                <div class="metric-card">
-                    <h4>Reporting Rate</h4>
-                    <div class="metric-value" id="reportingRate">0%</div>
-                    <p>Overall rate</p>
-                </div>
-            </div>
-            
-            <!-- Generate Button -->
-            <div style="text-align: center; margin: 2rem 0;">
-                <button class="btn btn-primary" onclick="generateAnalysis()">Generate Analysis</button>
-            </div>
+        <div class="page-footer">
+            <p style="margin: 0; font-weight: 700;">National Malaria Control Programme</p>
+            <p>Ministry of Health and Sanitation, Sierra Leone</p>
+            <p style="font-size: 11px;">Medical Stores Compound, Freetown, Sierra Leone</p>
+            <p style="font-size: 10px;">© 2025 Informatics Consultancy Firm-Sierra Leone (ICF-SL)</p>
         </div>
-
-        <!-- Results Section -->
-        <div id="resultsSection" class="hidden">
-            <!-- Chart Display Section -->
-            <div class="results-section">
-                <h3>Regional Heatmaps</h3>
-                <p>Navigate through regional reporting status heatmaps</p>
-                
-                <div class="chart-navigation">
-                    <button class="btn btn-secondary" onclick="showPreviousChart()" id="prevBtn" disabled>← Previous</button>
-                    <span id="chartCounter" style="margin: 0 2rem; color: #93c5fd; font-weight: bold;">Chart 0 of 0</span>
-                    <button class="btn btn-secondary" onclick="showNextChart()" id="nextBtn" disabled>Next →</button>
-                </div>
-            </div>
-
-            <!-- Single Chart Container -->
-            <div id="singleChartContainer" class="chart-container hidden">
-                <div class="chart-title" id="currentChartTitle">Region Heatmap</div>
-                <canvas id="currentChart" class="heatmap-canvas"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        <p>Health Facility Reporting Status Analysis Tool | Built with HTML, CSS & JavaScript</p>
     </div>
 
     <script>
-        let currentData = null;
+        let rawData = null;
         let processedData = null;
-        let analysisResults = null;
-        let currentChartIndex = 0;
-        let regions = [];
+        let availableColumns = [];
+        let columnConfig = { hfuid: '', year: '', month: '', report: '' };
+        let selectedPalette = 'bluOrange'; // Default to colorblind-friendly
 
-        // Initialize
+        // Color palettes: [notReported, reported]
+        // cbFriendly = true means colorblind-friendly
+        const colorPalettes = {
+            // Colorblind-friendly palettes (marked with ♿)
+            bluOrange: { name: 'Blue / Orange', colors: ['#0077BB', '#EE7733'], cbFriendly: true },
+            bluYellow: { name: 'Blue / Yellow', colors: ['#0077BB', '#CCBB44'], cbFriendly: true },
+            tealOrange: { name: 'Teal / Orange', colors: ['#009988', '#EE7733'], cbFriendly: true },
+            purpleTeal: { name: 'Purple / Teal', colors: ['#AA3377', '#009988'], cbFriendly: true },
+            navyYellow: { name: 'Navy / Yellow', colors: ['#332288', '#CCBB44'], cbFriendly: true },
+            grayOrange: { name: 'Gray / Orange', colors: ['#888888', '#EE7733'], cbFriendly: true },
+            blackYellow: { name: 'Black / Yellow', colors: ['#000000', '#DDCC77'], cbFriendly: true },
+            viridis: { name: 'Viridis', colors: ['#440154', '#21918c'], cbFriendly: true },
+            
+            // Standard palettes
+            redGreen: { name: 'Red / Green', colors: ['#dc3545', '#28a745'], cbFriendly: false },
+            blueOrange: { name: 'Blue / Orange', colors: ['#0d6efd', '#fd7e14'], cbFriendly: false },
+            purpleYellow: { name: 'Purple / Yellow', colors: ['#6f42c1', '#ffc107'], cbFriendly: false },
+            grayGreen: { name: 'Gray / Green', colors: ['#6c757d', '#198754'], cbFriendly: false },
+            pinkTeal: { name: 'Pink / Teal', colors: ['#d63384', '#20c997'], cbFriendly: false },
+            redBlue: { name: 'Red / Blue', colors: ['#f44336', '#2196f3'], cbFriendly: false },
+            blackGold: { name: 'Black / Gold', colors: ['#212529', '#ffc107'], cbFriendly: false }
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+            renderPaletteSelector();
         });
+
+        function renderPaletteSelector() {
+            const container = document.getElementById('paletteSelector');
+            
+            // Separate colorblind-friendly and standard palettes
+            const cbFriendlyPalettes = Object.entries(colorPalettes).filter(([k, p]) => p.cbFriendly);
+            const standardPalettes = Object.entries(colorPalettes).filter(([k, p]) => !p.cbFriendly);
+            
+            let html = '<div style="grid-column: 1/-1; margin-bottom: 0.5rem;"><strong style="color: #28a745;">♿ Colorblind-Friendly Palettes</strong></div>';
+            
+            html += cbFriendlyPalettes.map(([key, palette]) => `
+                <div class="palette-option ${key === selectedPalette ? 'selected' : ''}" onclick="selectPalette('${key}')" data-palette="${key}">
+                    <input type="radio" name="palette" value="${key}" ${key === selectedPalette ? 'checked' : ''}>
+                    <div class="palette-preview">
+                        <div class="color-box" style="background: ${palette.colors[0]};" title="Not Reported"></div>
+                        <div class="color-box" style="background: ${palette.colors[1]};" title="Reported"></div>
+                    </div>
+                    <div class="palette-name">${palette.name}</div>
+                    <div style="font-size: 10px; color: #28a745;">♿ Accessible</div>
+                </div>
+            `).join('');
+            
+            html += '<div style="grid-column: 1/-1; margin: 1rem 0 0.5rem; padding-top: 1rem; border-top: 2px solid #ddd;"><strong style="color: #666;">Standard Palettes</strong></div>';
+            
+            html += standardPalettes.map(([key, palette]) => `
+                <div class="palette-option ${key === selectedPalette ? 'selected' : ''}" onclick="selectPalette('${key}')" data-palette="${key}">
+                    <input type="radio" name="palette" value="${key}" ${key === selectedPalette ? 'checked' : ''}>
+                    <div class="palette-preview">
+                        <div class="color-box" style="background: ${palette.colors[0]};" title="Not Reported"></div>
+                        <div class="color-box" style="background: ${palette.colors[1]};" title="Reported"></div>
+                    </div>
+                    <div class="palette-name">${palette.name}</div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        function selectPalette(paletteKey) {
+            selectedPalette = paletteKey;
+            document.querySelectorAll('.palette-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.palette === paletteKey);
+                opt.querySelector('input').checked = opt.dataset.palette === paletteKey;
+            });
+        }
 
         function showAlert(message, type = 'info') {
             const alertContainer = document.getElementById('alertContainer');
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type}`;
             alertDiv.textContent = message;
-            
+            alertContainer.innerHTML = '';
             alertContainer.appendChild(alertDiv);
-            
-            // Auto-remove after 5 seconds
-            setTimeout(() => {
-                if (alertDiv.parentNode) {
-                    alertDiv.parentNode.removeChild(alertDiv);
-                }
-            }, 5000);
+            setTimeout(() => { if (alertDiv.parentNode) alertDiv.parentNode.removeChild(alertDiv); }, 5000);
         }
 
         function handleFileUpload(event) {
@@ -449,18 +405,15 @@
             const fileName = file.name;
             const fileExtension = fileName.split('.').pop().toLowerCase();
 
-            // Show progress
             document.getElementById('uploadProgress').classList.remove('hidden');
 
             if (fileExtension === 'csv') {
                 Papa.parse(file, {
                     header: true,
                     skipEmptyLines: true,
-                    complete: function(results) {
-                        processData(results.data, fileName);
-                    },
+                    complete: function(results) { loadData(results.data, fileName); },
                     error: function(error) {
-                        showAlert('Error reading CSV file: ' + error.message, 'error');
+                        showAlert('Error reading CSV: ' + error.message, 'error');
                         document.getElementById('uploadProgress').classList.add('hidden');
                     }
                 });
@@ -472,138 +425,96 @@
                         const workbook = XLSX.read(data, {type: 'array'});
                         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                         const jsonData = XLSX.utils.sheet_to_json(firstSheet);
-                        processData(jsonData, fileName);
+                        loadData(jsonData, fileName);
                     } catch (error) {
-                        showAlert('Error reading Excel file: ' + error.message, 'error');
+                        showAlert('Error reading Excel: ' + error.message, 'error');
                         document.getElementById('uploadProgress').classList.add('hidden');
                     }
                 };
                 reader.readAsArrayBuffer(file);
             } else {
-                showAlert('Unsupported file type. Please upload CSV or Excel files.', 'error');
+                showAlert('Please upload a CSV or Excel file', 'error');
                 document.getElementById('uploadProgress').classList.add('hidden');
-                return;
             }
         }
 
-        function processData(data, fileName) {
+        function loadData(data, fileName) {
             document.getElementById('uploadProgress').classList.add('hidden');
-            
-            if (!data || data.length === 0) {
-                showAlert('The file appears to be empty or invalid.', 'error');
-                return;
-            }
+            if (!data || data.length === 0) { showAlert('The file appears to be empty.', 'error'); return; }
 
-            currentData = data;
-            
-            if (!validateData(data)) {
-                return;
-            }
-
-            showAlert('File uploaded successfully!', 'success');
-            
-            // Update UI
-            updateDataSummary();
-            
-            // Show sections
-            document.getElementById('dataSummary').classList.remove('hidden');
+            rawData = data;
+            availableColumns = Object.keys(data[0] || {});
+            showAlert(`Loaded ${data.length} rows and ${availableColumns.length} columns.`, 'success');
+            populateColumnSelectors();
+            document.getElementById('uploadSection').classList.add('hidden');
+            document.getElementById('columnSelectionSection').classList.remove('hidden');
         }
 
-        function validateData(data) {
-            const requiredCols = ['hf_uid', 'allout', 'susp', 'test', 'conf', 'maltreat'];
-            const availableCols = Object.keys(data[0] || {});
-            const missingCols = requiredCols.filter(col => !availableCols.includes(col));
-            
-            if (missingCols.length > 0) {
-                showAlert(`Missing required columns: ${missingCols.join(', ')}`, 'error');
-                return false;
-            }
-            
-            // Create Date column if needed
-            if (!availableCols.includes('Date')) {
-                if (availableCols.includes('month') && availableCols.includes('year')) {
-                    try {
-                        showAlert('Creating Date column from month and year...', 'info');
-                        data.forEach(row => {
-                            const month = parseInt(row.month);
-                            const year = parseInt(row.year);
-                            if (month >= 1 && month <= 12 && year > 1900) {
-                                row.Date = `${year}-${month.toString().padStart(2, '0')}`;
-                            } else {
-                                throw new Error('Invalid month or year values');
-                            }
-                        });
-                        showAlert('Successfully created Date column', 'success');
-                    } catch (error) {
-                        showAlert('Error creating Date column: ' + error.message, 'error');
-                        return false;
+        function populateColumnSelectors() {
+            const selects = ['hfuidColumn', 'yearColumn', 'monthColumn', 'reportColumn'];
+            selects.forEach(id => {
+                const select = document.getElementById(id);
+                select.innerHTML = '<option value="">-- Select Column --</option>';
+                availableColumns.forEach(col => { select.innerHTML += `<option value="${col}">${col}</option>`; });
+            });
+            autoSelectColumns();
+        }
+
+        function autoSelectColumns() {
+            const patterns = {
+                hfuidColumn: ['hf_uid', 'hfuid', 'facility_id', 'facilityid', 'hf_id', 'orgunit', 'facility'],
+                yearColumn: ['year', 'yr'],
+                monthColumn: ['month', 'mon', 'mth'],
+                reportColumn: ['report', 'reported', 'status', 'reporting']
+            };
+
+            availableColumns.forEach(col => {
+                const colLower = col.toLowerCase();
+                Object.entries(patterns).forEach(([selectId, keywords]) => {
+                    if (keywords.some(p => colLower.includes(p) || colLower === p)) {
+                        document.getElementById(selectId).value = col;
                     }
-                } else if (availableCols.includes('year_mon')) {
-                    try {
-                        showAlert('Using year_mon as Date column...', 'info');
-                        data.forEach(row => {
-                            row.Date = row.year_mon.toString();
-                        });
-                        showAlert('Successfully used year_mon as Date column', 'success');
-                    } catch (error) {
-                        showAlert('Error using year_mon as Date: ' + error.message, 'error');
-                        return false;
-                    }
-                } else {
-                    showAlert('No Date, month/year, or year_mon columns found', 'error');
-                    return false;
-                }
-            }
-            
-            // Create ADM1 regions if needed
-            if (!availableCols.includes('adm1')) {
-                showAlert('Creating artificial ADM1 regions...', 'info');
-                const uniqueHFs = [...new Set(data.map(row => row.hf_uid))];
-                const nGroups = Math.min(16, Math.max(4, Math.floor(uniqueHFs.length / 10)));
-                const groupSize = Math.ceil(uniqueHFs.length / nGroups);
-                
-                const adm1Mapping = {};
-                uniqueHFs.sort().forEach((hf, index) => {
-                    const groupNum = Math.floor(index / groupSize);
-                    adm1Mapping[hf] = `Region_${(groupNum + 1).toString().padStart(2, '0')}`;
-                });
-                
-                data.forEach(row => {
-                    row.adm1 = adm1Mapping[row.hf_uid];
-                });
-                
-                showAlert(`Created ${nGroups} artificial ADM1 regions`, 'success');
-            }
-            
-            // Convert numeric columns
-            const numericCols = ['allout', 'susp', 'test', 'conf', 'maltreat'];
-            numericCols.forEach(col => {
-                data.forEach(row => {
-                    row[col] = isNaN(Number(row[col])) ? 0 : Number(row[col]);
                 });
             });
-            
-            processedData = data;
-            return true;
+        }
+
+        function processColumnSelection() {
+            columnConfig.hfuid = document.getElementById('hfuidColumn').value;
+            columnConfig.year = document.getElementById('yearColumn').value;
+            columnConfig.month = document.getElementById('monthColumn').value;
+            columnConfig.report = document.getElementById('reportColumn').value;
+
+            if (!columnConfig.hfuid) { showAlert('Please select a Health Facility ID column', 'error'); return; }
+            if (!columnConfig.year) { showAlert('Please select a Year column', 'error'); return; }
+            if (!columnConfig.month) { showAlert('Please select a Month column', 'error'); return; }
+            if (!columnConfig.report) { showAlert('Please select a Report Status column', 'error'); return; }
+
+            processData();
+        }
+
+        function processData() {
+            processedData = rawData.map(row => {
+                const year = parseInt(row[columnConfig.year]);
+                const month = parseInt(row[columnConfig.month]);
+                const report = parseInt(row[columnConfig.report]);
+                const dateStr = `${year}-${month.toString().padStart(2, '0')}`;
+                return { hf_uid: row[columnConfig.hfuid], Date: dateStr, status: report === 1 ? 1 : 0 };
+            }).filter(row => row.hf_uid && row.Date && row.Date !== 'NaN-NaN');
+
+            showAlert('Data processed successfully!', 'success');
+            updateDataSummary();
+            document.getElementById('columnSelectionSection').classList.add('hidden');
+            document.getElementById('dataSummary').classList.remove('hidden');
         }
 
         function updateDataSummary() {
             if (!processedData) return;
-            
-            const selectedVariables = ['allout', 'susp', 'test', 'conf', 'maltreat'];
-            const dataWithStatus = processedData.map(row => {
-                const totalCases = selectedVariables.reduce((sum, col) => sum + (row[col] || 0), 0);
-                return {
-                    ...row,
-                    has_reporting: totalCases > 0 ? 1 : 0
-                };
-            });
-            
             const totalHFs = new Set(processedData.map(row => row.hf_uid)).size;
             const totalMonths = new Set(processedData.map(row => row.Date)).size;
             const totalRecords = processedData.length;
-            const reportingRate = ((dataWithStatus.reduce((sum, row) => sum + row.has_reporting, 0) / totalRecords) * 100).toFixed(2);
-            
+            const reportingCount = processedData.filter(row => row.status === 1).length;
+            const reportingRate = ((reportingCount / totalRecords) * 100).toFixed(1);
+
             document.getElementById('totalHFs').textContent = totalHFs.toLocaleString();
             document.getElementById('totalMonths').textContent = totalMonths.toLocaleString();
             document.getElementById('totalRecords').textContent = totalRecords.toLocaleString();
@@ -611,316 +522,184 @@
         }
 
         function generateAnalysis() {
-            if (!processedData) {
-                showAlert('Please upload data first', 'error');
-                return;
-            }
-            
-            showAlert('Generating analysis...', 'info');
-            
+            if (!processedData) { showAlert('Please process data first', 'error'); return; }
+            showAlert('Generating heatmap...', 'info');
+
             try {
-                // Process data for analysis
-                analysisResults = createAnalysisResults(processedData);
-                regions = Object.keys(analysisResults.adm1Groups).sort();
-                
-                // Show results
-                showResults();
-                
-                // Initialize chart navigation
-                if (regions.length > 0) {
-                    currentChartIndex = 0;
-                    updateChartNavigation();
-                    displayCurrentChart();
-                }
-                
-                showAlert('Analysis completed!', 'success');
-                
+                document.getElementById('dataSummary').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+                const canvas = document.getElementById('currentChart');
+                generateOverallHeatmap(canvas);
+                showAlert('Heatmap generated!', 'success');
             } catch (error) {
-                showAlert('Error generating analysis: ' + error.message, 'error');
+                showAlert('Error: ' + error.message, 'error');
             }
         }
 
-        function createAnalysisResults(data) {
-            const selectedVariables = ['allout', 'susp', 'test', 'conf', 'maltreat'];
-            
-            // Add status to each row
-            const dataWithStatus = data.map(row => {
-                const totalCases = selectedVariables.reduce((sum, col) => sum + (row[col] || 0), 0);
-                return {
-                    ...row,
-                    status: totalCases > 0 ? 1 : 0
-                };
-            });
-            
-            // Group by ADM1
-            const adm1Groups = {};
-            dataWithStatus.forEach(row => {
-                const adm1 = row.adm1;
-                if (!adm1Groups[adm1]) {
-                    adm1Groups[adm1] = [];
-                }
-                adm1Groups[adm1].push(row);
-            });
-            
-            return {
-                dataWithStatus: dataWithStatus,
-                adm1Groups: adm1Groups
-            };
-        }
-
-        function showResults() {
-            // Show results section
-            document.getElementById('resultsSection').classList.remove('hidden');
-        }
-
-        function updateChartNavigation() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const counter = document.getElementById('chartCounter');
-            
-            prevBtn.disabled = currentChartIndex <= 0;
-            nextBtn.disabled = currentChartIndex >= regions.length - 1;
-            
-            counter.textContent = `Chart ${currentChartIndex + 1} of ${regions.length}`;
-        }
-
-        function showPreviousChart() {
-            if (currentChartIndex > 0) {
-                currentChartIndex--;
-                updateChartNavigation();
-                displayCurrentChart();
-            }
-        }
-
-        function showNextChart() {
-            if (currentChartIndex < regions.length - 1) {
-                currentChartIndex++;
-                updateChartNavigation();
-                displayCurrentChart();
-            }
-        }
-
-        function displayCurrentChart() {
-            if (!analysisResults || currentChartIndex < 0 || currentChartIndex >= regions.length) return;
-            
-            const regionName = regions[currentChartIndex];
-            const canvas = document.getElementById('currentChart');
-            const title = document.getElementById('currentChartTitle');
-            
-            title.textContent = `${regionName} - Health Facility Reporting Status`;
-            
-            generateRegionHeatmap(regionName, canvas, () => {
-                document.getElementById('singleChartContainer').classList.remove('hidden');
-            });
-        }
-
-        function generateRegionHeatmap(adm1, canvas, callback) {
-            const data = analysisResults.adm1Groups[adm1];
-            
-            // Group by HF and Date
+        function generateOverallHeatmap(canvas) {
             const hfData = {};
-            data.forEach(row => {
-                if (!hfData[row.hf_uid]) {
-                    hfData[row.hf_uid] = {};
-                }
-                // Ensure date is in YYYY-MM format
-                let formattedDate = row.Date;
-                if (formattedDate && formattedDate.length > 7) {
-                    formattedDate = formattedDate.substring(0, 7); // Take only YYYY-MM part
-                }
-                hfData[row.hf_uid][formattedDate] = row.status;
+            processedData.forEach(row => {
+                if (!hfData[row.hf_uid]) hfData[row.hf_uid] = {};
+                hfData[row.hf_uid][row.Date] = row.status;
             });
-            
-            const hfIds = Object.keys(hfData).sort();
-            const dates = [...new Set(data.map(row => {
-                let formattedDate = row.Date;
-                if (formattedDate && formattedDate.length > 7) {
-                    formattedDate = formattedDate.substring(0, 7);
-                }
-                return formattedDate;
-            }))].sort();
-            
-            if (hfIds.length === 0 || dates.length === 0) {
-                if (callback) callback();
-                return;
-            }
-            
+
+            const dates = [...new Set(processedData.map(row => row.Date))].sort();
+            const hfReportingRates = Object.keys(hfData).map(hfId => {
+                const reports = dates.map(date => hfData[hfId][date] || 0);
+                const reportCount = reports.filter(r => r === 1).length;
+                return { hfId, rate: reportCount / dates.length };
+            });
+            hfReportingRates.sort((a, b) => b.rate - a.rate);
+            const hfIds = hfReportingRates.map(item => item.hfId);
+
+            if (hfIds.length === 0 || dates.length === 0) { showAlert('No valid data to display', 'error'); return; }
+
             const ctx = canvas.getContext('2d');
-            
-            // Calculate dimensions based on data size
-            const minCellWidth = 3;
-            const minCellHeight = 3;
-            const maxCellWidth = 25;
-            const maxCellHeight = 20;
-            const minCanvasWidth = 800;
-            const maxCanvasWidth = 1200;
-            const minCanvasHeight = 400;
-            const maxCanvasHeight = 1500; // Increased maximum height
-            
-            // Layout margins
-            const margins = {
-                top: 100,
-                bottom: 80,
-                left: 120,
-                right: 50
-            };
-            
-            // Calculate optimal cell sizes
-            let cellWidth = Math.max(minCellWidth, Math.min(maxCellWidth, (maxCanvasWidth - margins.left - margins.right) / dates.length));
-            let cellHeight = Math.max(minCellHeight, Math.min(maxCellHeight, (maxCanvasHeight - margins.top - margins.bottom) / hfIds.length));
-            
-            // Calculate heatmap dimensions
-            const heatmapWidth = cellWidth * dates.length;
-            const heatmapHeight = cellHeight * hfIds.length;
-            
-            // Calculate total canvas dimensions
-            const canvasWidth = Math.max(minCanvasWidth, heatmapWidth + margins.left + margins.right);
-            const canvasHeight = Math.max(minCanvasHeight, heatmapHeight + margins.top + margins.bottom);
-            
-            // Set canvas size
-            canvas.width = canvasWidth;
-            canvas.height = canvasHeight;
-            canvas.style.width = canvasWidth + 'px';
-            canvas.style.height = canvasHeight + 'px';
-            
-            // Enable text smoothing
-            ctx.textRenderingOptimization = 'optimizeQuality';
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            
-            // Clear canvas with white background
+            const palette = colorPalettes[selectedPalette];
+            const chartTitle = document.getElementById('chartTitle').value || 'Health Facility Reporting Status';
+            const xAxisLabel = document.getElementById('xAxisLabel').value || 'Time Period (YYYY-MM)';
+            const yAxisLabel = document.getElementById('yAxisLabel').value || 'Health Facilities';
+            const reportedLabel = document.getElementById('reportedLabel').value || 'Reported';
+            const notReportedLabel = document.getElementById('notReportedLabel').value || 'No Report';
+
+            const canvasSize = 800;
+            const margins = { top: 80, bottom: 70, left: 40, right: 20 };
+            const heatmapWidth = canvasSize - margins.left - margins.right;
+            const heatmapHeight = canvasSize - margins.top - margins.bottom;
+            const cellWidth = heatmapWidth / dates.length;
+            const cellHeight = heatmapHeight / hfIds.length;
+
+            canvas.width = canvasSize;
+            canvas.height = canvasSize;
+            canvas.style.width = canvasSize + 'px';
+            canvas.style.height = canvasSize + 'px';
+
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-            
-            // Center the heatmap in available space
-            const startX = margins.left + (canvasWidth - margins.left - margins.right - heatmapWidth) / 2;
-            const startY = margins.top + (canvasHeight - margins.top - margins.bottom - heatmapHeight) / 2;
-            
+            ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+            const startX = margins.left;
+            const startY = margins.top;
+
             // Title
-            ctx.fillStyle = '#1e293b';
-            ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
+            ctx.fillStyle = '#004080';
+            ctx.font = 'bold 16px Oswald, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(`${adm1} - Health Facility Reporting Status`, canvasWidth/2, 25);
-            
+            ctx.fillText(chartTitle, canvasSize / 2, 20);
+
             // Legend
-            const legendY = 50;
-            const legendCenterX = canvasWidth / 2;
-            
-            // Legend background
-            ctx.fillStyle = 'rgba(240, 245, 255, 0.95)';
-            ctx.fillRect(legendCenterX - 120, legendY - 10, 240, 35);
-            ctx.strokeStyle = '#e2e8f0';
+            const legendY = 40;
+            const legendCenterX = canvasSize / 2;
+
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(legendCenterX - 130, legendY - 8, 260, 28);
+            ctx.strokeStyle = '#004080';
             ctx.lineWidth = 1;
-            ctx.strokeRect(legendCenterX - 120, legendY - 10, 240, 35);
-            
-            // Legend items
-            ctx.fillStyle = '#1e293b';
-            ctx.font = '12px system-ui, -apple-system, sans-serif';
+            ctx.strokeRect(legendCenterX - 130, legendY - 8, 260, 28);
+
+            ctx.font = '11px Oswald, sans-serif';
             ctx.textAlign = 'left';
-            
-            // No Report
-            ctx.fillStyle = '#dc2626';
-            ctx.fillRect(legendCenterX - 100, legendY, 20, 12);
-            ctx.strokeStyle = '#991b1b';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(legendCenterX - 100, legendY, 20, 12);
-            
-            ctx.fillStyle = '#1e293b';
-            ctx.fillText('No Report', legendCenterX - 75, legendY + 9);
-            
-            // Has Report
-            ctx.fillStyle = '#059669';
-            ctx.fillRect(legendCenterX + 10, legendY, 20, 12);
-            ctx.strokeStyle = '#047857';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(legendCenterX + 10, legendY, 20, 12);
-            
-            ctx.fillStyle = '#1e293b';
-            ctx.fillText('Has Report', legendCenterX + 35, legendY + 9);
-            
+
+            ctx.fillStyle = palette.colors[0];
+            ctx.fillRect(legendCenterX - 115, legendY, 16, 10);
+            ctx.fillStyle = '#000000';
+            ctx.fillText(`${notReportedLabel} (0)`, legendCenterX - 95, legendY + 9);
+
+            ctx.fillStyle = palette.colors[1];
+            ctx.fillRect(legendCenterX + 25, legendY, 16, 10);
+            ctx.fillStyle = '#000000';
+            ctx.fillText(`${reportedLabel} (1)`, legendCenterX + 45, legendY + 9);
+
             // Draw heatmap cells
             hfIds.forEach((hfId, hfIndex) => {
                 dates.forEach((date, dateIndex) => {
                     const status = hfData[hfId][date] || 0;
                     const cellX = startX + dateIndex * cellWidth;
                     const cellY = startY + hfIndex * cellHeight;
-                    
-                    // Draw cell
-                    ctx.fillStyle = status === 1 ? '#059669' : '#dc2626';
-                    ctx.fillRect(cellX, cellY, cellWidth - 1, cellHeight - 1);
-                    
-                    // Cell border for larger cells
-                    if (cellWidth > 5 && cellHeight > 5) {
-                        ctx.strokeStyle = '#ffffff';
-                        ctx.lineWidth = 0.5;
-                        ctx.strokeRect(cellX, cellY, cellWidth - 1, cellHeight - 1);
-                    }
+                    ctx.fillStyle = status === 1 ? palette.colors[1] : palette.colors[0];
+                    ctx.fillRect(cellX, cellY, cellWidth - 0.5, cellHeight - 0.5);
                 });
             });
-            
-            // Y-axis labels (Health Facilities)
-            ctx.fillStyle = '#1e293b';
-            ctx.font = '9px system-ui, -apple-system, sans-serif';
+
+            // X-axis labels (dates) - 90 degrees
+            ctx.fillStyle = '#000000';
+            ctx.font = '9px Oswald, sans-serif';
             ctx.textAlign = 'right';
-            
-            const maxHFLabels = Math.floor(heatmapHeight / 12); // Ensure labels don't overlap
-            const hfLabelStep = Math.max(1, Math.ceil(hfIds.length / maxHFLabels));
-            
-            hfIds.forEach((hfId, hfIndex) => {
-                if (hfIndex % hfLabelStep === 0) {
-                    const labelText = hfId.length > 15 ? hfId.substring(0, 13) + '..' : hfId;
-                    const labelY = startY + hfIndex * cellHeight + cellHeight/2 + 3;
-                    ctx.fillText(labelText, startX - 5, labelY);
-                }
-            });
-            
-            // X-axis labels (Dates)
-            ctx.fillStyle = '#1e293b';
-            ctx.font = '9px system-ui, -apple-system, sans-serif';
-            ctx.textAlign = 'center';
-            
-            const maxDateLabels = Math.floor(heatmapWidth / 50); // Account for rotated text width
-            const dateLabelStep = Math.max(1, Math.ceil(dates.length / maxDateLabels));
-            
+            ctx.textBaseline = 'middle';
+
             dates.forEach((date, dateIndex) => {
-                if (dateIndex % dateLabelStep === 0) {
-                    const labelX = startX + dateIndex * cellWidth + cellWidth/2;
-                    const labelY = startY + heatmapHeight + 15;
-                    
+                if (dateIndex % 3 === 0) {
+                    const labelX = startX + dateIndex * cellWidth + cellWidth / 2;
                     ctx.save();
-                    ctx.translate(labelX, labelY);
-                    ctx.rotate(-Math.PI/4); // 45 degree rotation for better fit
+                    ctx.translate(labelX + 3, startY + heatmapHeight + 8);
+                    ctx.rotate(-Math.PI / 2);
                     ctx.fillText(date, 0, 0);
                     ctx.restore();
                 }
             });
-            
+
             // Axis titles
-            ctx.fillStyle = '#64748b';
-            ctx.font = 'bold 12px system-ui, -apple-system, sans-serif';
+            ctx.fillStyle = '#004080';
+            ctx.font = 'bold 11px Oswald, sans-serif';
             ctx.textAlign = 'center';
-            
-            // Y-axis title
+
             ctx.save();
-            ctx.translate(20, startY + heatmapHeight / 2);
-            ctx.rotate(-Math.PI/2);
-            ctx.fillText('Health Facilities', 0, 0);
+            ctx.translate(12, startY + heatmapHeight / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText(yAxisLabel, 0, 0);
             ctx.restore();
-            
-            // X-axis title
-            const xAxisTitleY = Math.min(canvasHeight - 15, startY + heatmapHeight + 60);
-            ctx.fillText('Time Period (YYYY-MM)', startX + heatmapWidth / 2, xAxisTitleY);
-            
-            // Add data info
-            ctx.fillStyle = '#6b7280';
-            ctx.font = '10px system-ui, -apple-system, sans-serif';
+
+            ctx.fillText(xAxisLabel, startX + heatmapWidth / 2, canvasSize - 8);
+
+            // Info
+            ctx.fillStyle = '#666666';
+            ctx.font = '9px Oswald, sans-serif';
             ctx.textAlign = 'right';
-            ctx.fillText(`${hfIds.length} facilities × ${dates.length} periods`, canvasWidth - 10, canvasHeight - 10);
-            
-            // Callback when done
-            if (callback) {
-                setTimeout(callback, 100);
-            }
+            ctx.fillText(`${hfIds.length} facilities × ${dates.length} periods`, canvasSize - 5, canvasSize - 3);
+        }
+
+        function downloadHeatmap() {
+            const canvas = document.getElementById('currentChart');
+            const link = document.createElement('a');
+            const title = document.getElementById('chartTitle').value || 'hf_reporting_heatmap';
+            link.download = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showAlert('Heatmap image downloaded!', 'success');
+        }
+
+        function backToColumnSelection() {
+            document.getElementById('dataSummary').classList.add('hidden');
+            document.getElementById('columnSelectionSection').classList.remove('hidden');
+        }
+
+        function backToSummary() {
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('dataSummary').classList.remove('hidden');
+        }
+
+        function resetFile() {
+            rawData = null;
+            processedData = null;
+            availableColumns = [];
+            columnConfig = { hfuid: '', year: '', month: '', report: '' };
+
+            document.getElementById('uploadSection').classList.remove('hidden');
+            document.getElementById('columnSelectionSection').classList.add('hidden');
+            document.getElementById('dataSummary').classList.add('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('fileInput').value = '';
+            document.getElementById('alertContainer').innerHTML = '';
+
+            // Reset custom labels
+            document.getElementById('chartTitle').value = 'Health Facility Reporting Status';
+            document.getElementById('xAxisLabel').value = 'Time Period (YYYY-MM)';
+            document.getElementById('yAxisLabel').value = 'Health Facilities (High → Low Reporting)';
+            document.getElementById('reportedLabel').value = 'Reported';
+            document.getElementById('notReportedLabel').value = 'No Report';
+
+            // Reset palette to colorblind-friendly default
+            selectedPalette = 'bluOrange';
+            renderPaletteSelector();
         }
     </script>
 </body>
