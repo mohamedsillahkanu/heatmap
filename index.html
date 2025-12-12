@@ -122,7 +122,7 @@
                     </div>
 
                     <div class="section-header">
-                        <span class="section-icon">?</span>
+                        <span class="section-icon">1</span>
                         <span class="section-title">HOW IT WORKS</span>
                     </div>
                     
@@ -161,7 +161,7 @@
                 <!-- Column Selection Section -->
                 <div id="columnSelectionSection" class="hidden">
                     <div class="section-header">
-                        <span class="section-icon">⚙</span>
+                        <span class="section-icon">2</span>
                         <span class="section-title">SELECT COLUMNS</span>
                     </div>
 
@@ -212,7 +212,7 @@
                 <!-- Data Summary Section -->
                 <div id="dataSummary" class="hidden">
                     <div class="section-header">
-                        <span class="section-icon">📊</span>
+                        <span class="section-icon">3</span>
                         <span class="section-title">DATA SUMMARY</span>
                     </div>
 
@@ -241,13 +241,13 @@
 
                     <!-- Color Palette Selection -->
                     <div class="customization-card">
-                        <h4>🎨 Select Color Palette <span style="font-size: 12px; color: #28a745; font-weight: 500;">(♿ = Colorblind-Friendly)</span></h4>
+                        <h4>Select Color Palette <span style="font-size: 12px; color: #28a745; font-weight: 500;">(CB = Colorblind-Friendly)</span></h4>
                         <div class="palette-selector" id="paletteSelector"></div>
                     </div>
 
                     <!-- Custom Labels -->
                     <div class="customization-card">
-                        <h4>📝 Customize Labels</h4>
+                        <h4>Customize Labels</h4>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="chartTitle">Chart Title</label>
@@ -283,7 +283,7 @@
                 <!-- Results Section -->
                 <div id="resultsSection" class="hidden">
                     <div class="section-header">
-                        <span class="section-icon">📈</span>
+                        <span class="section-icon">4</span>
                         <span class="section-title">REPORTING STATUS HEATMAP</span>
                     </div>
 
@@ -318,7 +318,7 @@
         // Color palettes: [notReported, reported]
         // cbFriendly = true means colorblind-friendly
         const colorPalettes = {
-            // Colorblind-friendly palettes (marked with ♿)
+            // Colorblind-friendly palettes (marked with CB)
             bluOrange: { name: 'Blue / Orange', colors: ['#0077BB', '#EE7733'], cbFriendly: true },
             bluYellow: { name: 'Blue / Yellow', colors: ['#0077BB', '#CCBB44'], cbFriendly: true },
             tealOrange: { name: 'Teal / Orange', colors: ['#009988', '#EE7733'], cbFriendly: true },
@@ -350,7 +350,7 @@
             const cbFriendlyPalettes = Object.entries(colorPalettes).filter(([k, p]) => p.cbFriendly);
             const standardPalettes = Object.entries(colorPalettes).filter(([k, p]) => !p.cbFriendly);
             
-            let html = '<div style="grid-column: 1/-1; margin-bottom: 0.5rem;"><strong style="color: #28a745;">♿ Colorblind-Friendly Palettes</strong></div>';
+            let html = '<div style="grid-column: 1/-1; margin-bottom: 0.5rem;"><strong style="color: #28a745;">Colorblind-Friendly Palettes</strong></div>';
             
             html += cbFriendlyPalettes.map(([key, palette]) => `
                 <div class="palette-option ${key === selectedPalette ? 'selected' : ''}" onclick="selectPalette('${key}')" data-palette="${key}">
@@ -360,7 +360,7 @@
                         <div class="color-box" style="background: ${palette.colors[1]};" title="Reported"></div>
                     </div>
                     <div class="palette-name">${palette.name}</div>
-                    <div style="font-size: 10px; color: #28a745;">♿ Accessible</div>
+                    <div style="font-size: 10px; color: #28a745;">CB Accessible</div>
                 </div>
             `).join('');
             
@@ -616,7 +616,7 @@
                     const cellX = startX + dateIndex * cellWidth;
                     const cellY = startY + hfIndex * cellHeight;
                     ctx.fillStyle = status === 1 ? palette.colors[1] : palette.colors[0];
-                    ctx.fillRect(cellX, cellY, cellWidth - 0.5, cellHeight - 0.5);
+                    ctx.fillRect(cellX, cellY, cellWidth + 0.5, cellHeight + 0.5);
                 });
             });
 
