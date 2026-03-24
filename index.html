@@ -19,7 +19,7 @@
         .page-header .tagline { margin: 0; font-size: 10px; font-weight: 500; color: #ffffff; }
         .page-header h1 { margin: 20px 0 10px; font-size: 24px; font-weight: 700; color: #ffffff; letter-spacing: 1px; }
         .page-header .subtitle { font-size: 14px; color: #ffffff; font-weight: 500; }
-        .content-card { border: 4px double #004080; border-radius: 12px; padding: 12px; background-color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-bottom: 15px; }
+        .content-card { border: 4px double #004080; border-radius: 12px; padding: 12px; background-color: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 15px; }
         .content-inner { padding: 25px; }
         .upload-section { background: #f8f9fa; padding: 2rem; border-radius: 8px; border: 2px dashed #004080; text-align: center; margin: 1.5rem 0; transition: all 0.3s ease; }
         .upload-section:hover { border-color: #0056b3; background: #e7f3ff; }
@@ -32,8 +32,8 @@
         .section-icon { background: #ffffff; color: #004080; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
         .section-title { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
-        .stats-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); text-align: center; border: 2px solid #004080; transition: all 0.2s; }
-        .stats-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0, 64, 128, 0.2); }
+        .stats-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; border: 2px solid #004080; transition: all 0.2s; }
+        .stats-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,64,128,0.2); }
         .stats-card h4 { color: #666; font-size: 12px; margin-bottom: 0.5rem; text-transform: uppercase; }
         .stats-card .metric-value { font-size: 2.5rem; color: #004080; margin-bottom: 0.5rem; font-weight: 700; }
         .stats-card p { color: #666; font-size: 12px; }
@@ -55,11 +55,12 @@
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: #004080; }
         .form-control { width: 100%; padding: 0.75rem 1rem; border: 2px solid #004080; border-radius: 6px; font-size: 14px; background: #ffffff; color: #000000; font-family: 'Oswald', Arial, sans-serif; font-weight: 500; }
-        .form-control:focus { outline: none; border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0, 64, 128, 0.1); }
+        .form-control:focus { outline: none; border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0,64,128,0.1); }
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
         .chart-container { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 2px solid #004080; margin: 1.5rem 0; text-align: center; overflow-x: auto; }
         .chart-title { color: #004080; font-size: 18px; font-weight: 700; margin-bottom: 1rem; }
-        .heatmap-canvas { border-radius: 8px; background: #ffffff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); border: 2px solid #004080; display: block; margin: 0 auto; max-width: 100%; }
+        .chart-subtitle { color: #666; font-size: 13px; margin-bottom: 1rem; font-weight: 500; }
+        .heatmap-canvas { border-radius: 8px; background: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 2px solid #004080; display: block; margin: 0 auto; max-width: 100%; }
         .loading-spinner { border: 4px solid #e7f3ff; border-top: 4px solid #004080; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
@@ -75,13 +76,16 @@
         .palette-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 1rem 0; }
         .palette-option { background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 2px solid #ddd; cursor: pointer; transition: all 0.2s; text-align: center; }
         .palette-option:hover { border-color: #004080; }
-        .palette-option.selected { border-color: #004080; background: #e7f3ff; box-shadow: 0 0 0 3px rgba(0, 64, 128, 0.2); }
+        .palette-option.selected { border-color: #004080; background: #e7f3ff; box-shadow: 0 0 0 3px rgba(0,64,128,0.2); }
         .palette-option input[type="radio"] { display: none; }
         .palette-preview { display: flex; justify-content: center; gap: 5px; margin-bottom: 0.5rem; }
         .palette-preview .color-box { width: 30px; height: 20px; border-radius: 3px; border: 1px solid #ccc; }
         .palette-name { font-size: 12px; font-weight: 700; color: #004080; }
         .customization-card { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 2px solid #004080; margin: 1rem 0; }
         .customization-card h4 { color: #004080; margin-bottom: 1rem; font-size: 16px; font-weight: 700; }
+        .heatmap-divider { border: none; border-top: 3px dashed #004080; margin: 2.5rem 0; }
+        .heatmap-label { display: inline-block; background: #004080; color: #fff; padding: 6px 18px; border-radius: 4px; font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 12px; }
+        .heatmap-label.active { background: #28a745; }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #f8f9fa; border-radius: 4px; }
         ::-webkit-scrollbar-thumb { background: #004080; border-radius: 4px; }
@@ -89,618 +93,705 @@
     </style>
 </head>
 <body>
-    <div class="page-container">
-        <div class="page-header">
-            <div class="logo-row">
-                <div class="logo-box">
-                    <img src="https://github.com/mohamedsillahkanu/gdp-dashboard-2/raw/6c7463b0d5c3be150aafae695a4bcbbd8aeb1499/ICF-SL.jpg" alt="ICF-SL Logo">
-                </div>
+<div class="page-container">
+    <div class="page-header">
+        <div class="logo-row">
+            <div class="logo-box">
+                <img src="https://github.com/mohamedsillahkanu/gdp-dashboard-2/raw/6c7463b0d5c3be150aafae695a4bcbbd8aeb1499/ICF-SL.jpg" alt="ICF-SL Logo">
             </div>
-            <h3>Informatics Consultancy Firm-Sierra Leone<br>(ICF-SL)</h3>
-            <p class="tagline"><em>Driving Data-Driven Solutions for Health and Development</em></p>
-            <h1>HEALTH FACILITY REPORTING ANALYSIS</h1>
-            <p class="subtitle">Visualize health facility reporting patterns</p>
         </div>
+        <h3>Informatics Consultancy Firm-Sierra Leone<br>(ICF-SL)</h3>
+        <p class="tagline"><em>Driving Data-Driven Solutions for Health and Development</em></p>
+        <h1>HEALTH FACILITY REPORTING ANALYSIS</h1>
+        <p class="subtitle">Visualize health facility reporting patterns</p>
+    </div>
 
-        <div class="content-card">
-            <div class="content-inner">
-                <div id="alertContainer"></div>
+    <div class="content-card">
+        <div class="content-inner">
+            <div id="alertContainer"></div>
 
-                <!-- Upload Section -->
-                <div id="uploadSection">
-                    <div class="upload-section">
-                        <h3>UPLOAD YOUR DATA FILE</h3>
-                        <p>Upload a CSV or Excel file with health facility reporting data</p>
-                        <label class="file-input-wrapper">
-                            Choose File
-                            <input type="file" id="fileInput" accept=".csv,.xlsx,.xls">
-                        </label>
-                        <div id="uploadProgress" class="hidden">
-                            <div class="loading-spinner"></div>
-                            <p>Processing your file...</p>
-                        </div>
-                    </div>
-
-                    <div class="section-header">
-                        <span class="section-icon">1</span>
-                        <span class="section-title">HOW IT WORKS</span>
-                    </div>
-                    
-                    <div class="feature-grid">
-                        <div class="feature-card">
-                            <h4>Analysis Process</h4>
-                            <ol>
-                                <li><strong>Upload File:</strong> CSV or Excel file</li>
-                                <li><strong>Select Columns:</strong> Map 4 required columns</li>
-                                <li><strong>Customize:</strong> Colors, title, labels</li>
-                                <li><strong>Generate Heatmap:</strong> Overall view</li>
-                            </ol>
-                        </div>
-                        <div class="feature-card">
-                            <h4>Required Columns</h4>
-                            <ul>
-                                <li><strong>hf_uid:</strong> HF001, HF002, FAC_123</li>
-                                <li><strong>year:</strong> 2023, 2024, 2025</li>
-                                <li><strong>month:</strong> 1-12 or 01-12</li>
-                                <li><strong>report:</strong> 1 (yes) or 0 (no)</li>
-                            </ul>
-                        </div>
-                        <div class="feature-card">
-                            <h4>Features</h4>
-                            <ul>
-                                <li><strong>8 colorblind-friendly</strong> palettes</li>
-                                <li><strong>7 standard</strong> color palettes</li>
-                                <li>Custom title & axis labels</li>
-                                <li>Reporting rate statistics</li>
-                                <li>Download as PNG image</li>
-                            </ul>
-                        </div>
+            <!-- Upload Section -->
+            <div id="uploadSection">
+                <div class="upload-section">
+                    <h3>UPLOAD YOUR DATA FILE</h3>
+                    <p>Upload a CSV or Excel file with health facility reporting data</p>
+                    <label class="file-input-wrapper">
+                        Choose File
+                        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls">
+                    </label>
+                    <div id="uploadProgress" class="hidden">
+                        <div class="loading-spinner"></div>
+                        <p>Processing your file...</p>
                     </div>
                 </div>
-
-                <!-- Column Selection Section -->
-                <div id="columnSelectionSection" class="hidden">
-                    <div class="section-header">
-                        <span class="section-icon">2</span>
-                        <span class="section-title">SELECT COLUMNS</span>
-                    </div>
-
-                    <div class="info-message">
-                        <strong>Map your data columns:</strong> Select which columns from your dataset correspond to each required field.
-                    </div>
-
-                    <div class="column-selection-card">
-                        <h4>Required Column Mappings</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="hfuidColumn">Health Facility ID (hf_uid)</label>
-                                <select id="hfuidColumn" class="form-control">
-                                    <option value="">-- Select Column --</option>
-                                </select>
-                                <small style="color: #666; font-size: 12px;">Example: HF001, HF002, FAC_123</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="yearColumn">Year Column</label>
-                                <select id="yearColumn" class="form-control">
-                                    <option value="">-- Select Column --</option>
-                                </select>
-                                <small style="color: #666; font-size: 12px;">Example: 2023, 2024, 2025</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="monthColumn">Month Column</label>
-                                <select id="monthColumn" class="form-control">
-                                    <option value="">-- Select Column --</option>
-                                </select>
-                                <small style="color: #666; font-size: 12px;">Example: 1-12 or 01-12</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="reportColumn">Report Status Column</label>
-                                <select id="reportColumn" class="form-control">
-                                    <option value="">-- Select Column --</option>
-                                </select>
-                                <small style="color: #666; font-size: 12px;">Example: 1 = reported, 0 = not reported</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center; margin-top: 1.5rem;">
-                        <button class="btn btn-gold" onclick="processColumnSelection()">Apply Column Selection</button>
-                        <button class="btn btn-secondary" onclick="resetFile()">Upload Different File</button>
-                    </div>
+                <div class="section-header">
+                    <span class="section-icon">1</span>
+                    <span class="section-title">HOW IT WORKS</span>
                 </div>
-
-                <!-- Data Summary Section -->
-                <div id="dataSummary" class="hidden">
-                    <div class="section-header">
-                        <span class="section-icon">3</span>
-                        <span class="section-title">DATA SUMMARY</span>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>Analysis Process</h4>
+                        <ol>
+                            <li><strong>Upload File:</strong> CSV or Excel file</li>
+                            <li><strong>Select Columns:</strong> Map 4 required columns</li>
+                            <li><strong>Customize:</strong> Colors, title, labels</li>
+                            <li><strong>Generate Heatmaps:</strong> All facilities + Active only</li>
+                        </ol>
                     </div>
-
-                    <div class="stats-grid">
-                        <div class="stats-card">
-                            <h4>Health Facilities</h4>
-                            <div class="metric-value" id="totalHFs">0</div>
-                            <p>Unique facilities</p>
-                        </div>
-                        <div class="stats-card">
-                            <h4>Time Periods</h4>
-                            <div class="metric-value" id="totalMonths">0</div>
-                            <p>Unique months</p>
-                        </div>
-                        <div class="stats-card">
-                            <h4>Total Records</h4>
-                            <div class="metric-value" id="totalRecords">0</div>
-                            <p>Data points</p>
-                        </div>
-                        <div class="stats-card">
-                            <h4>Reporting Rate</h4>
-                            <div class="metric-value" id="reportingRate">0%</div>
-                            <p>Overall rate</p>
-                        </div>
+                    <div class="feature-card">
+                        <h4>Required Columns</h4>
+                        <ul>
+                            <li><strong>hf_uid:</strong> HF001, HF002, FAC_123</li>
+                            <li><strong>year:</strong> 2023, 2024, 2025</li>
+                            <li><strong>month:</strong> 1-12 or 01-12</li>
+                            <li><strong>report:</strong> 1 (yes) or 0 (no)</li>
+                        </ul>
                     </div>
-
-                    <!-- Color Palette Selection -->
-                    <div class="customization-card">
-                        <h4>Select Color Palette <span style="font-size: 12px; color: #28a745; font-weight: 500;">(CB = Colorblind-Friendly)</span></h4>
-                        <div class="palette-selector" id="paletteSelector"></div>
-                    </div>
-
-                    <!-- Custom Labels -->
-                    <div class="customization-card">
-                        <h4>Customize Labels</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="chartTitle">Chart Title</label>
-                                <input type="text" id="chartTitle" class="form-control" value="Health Facility Reporting Status" placeholder="Enter chart title">
-                            </div>
-                            <div class="form-group">
-                                <label for="xAxisLabel">X-Axis Label (Time)</label>
-                                <input type="text" id="xAxisLabel" class="form-control" value="Time Period (YYYY-MM)" placeholder="Enter X-axis label">
-                            </div>
-                            <div class="form-group">
-                                <label for="yAxisLabel">Y-Axis Label (Facilities)</label>
-                                <input type="text" id="yAxisLabel" class="form-control" value="Health Facilities (High → Low Reporting)" placeholder="Enter Y-axis label">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="reportedLabel">Reported Label (Status = 1)</label>
-                                <input type="text" id="reportedLabel" class="form-control" value="Reported" placeholder="Label for reported">
-                            </div>
-                            <div class="form-group">
-                                <label for="notReportedLabel">Not Reported Label (Status = 0)</label>
-                                <input type="text" id="notReportedLabel" class="form-control" value="No Report" placeholder="Label for not reported">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center; margin: 2rem 0;">
-                        <button class="btn btn-primary" onclick="generateAnalysis()">Generate Heatmap</button>
-                        <button class="btn btn-secondary" onclick="backToColumnSelection()">Change Column Selection</button>
-                    </div>
-                </div>
-
-                <!-- Results Section -->
-                <div id="resultsSection" class="hidden">
-                    <div class="section-header">
-                        <span class="section-icon">4</span>
-                        <span class="section-title">REPORTING STATUS HEATMAP</span>
-                    </div>
-
-                    <div id="singleChartContainer" class="chart-container">
-                        <div class="chart-title" id="currentChartTitle">Health Facility Reporting Status</div>
-                        <canvas id="currentChart" class="heatmap-canvas"></canvas>
-                    </div>
-
-                    <div style="text-align: center; margin-top: 1.5rem;">
-                        <button class="btn btn-success" onclick="downloadHeatmap()">Download Heatmap Image</button>
-                        <button class="btn btn-secondary" onclick="backToSummary()">Back to Summary</button>
+                    <div class="feature-card">
+                        <h4>Features</h4>
+                        <ul>
+                            <li><strong>Two heatmaps:</strong> All facilities & active-only</li>
+                            <li><strong>All YYYY-MM</strong> x-axis labels shown</li>
+                            <li><strong>300 DPI</strong> high-res PNG download</li>
+                            <li><strong>15 color palettes</strong> (8 CB-friendly)</li>
+                            <li>Custom title &amp; axis labels</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="page-footer">
-            <p style="margin: 0; font-weight: 700;">National Malaria Control Programme</p>
-            <p>Ministry of Health and Sanitation, Sierra Leone</p>
-            <p style="font-size: 11px;">Medical Stores Compound, Freetown, Sierra Leone</p>
-            <p style="font-size: 10px;">© 2025 Informatics Consultancy Firm-Sierra Leone (ICF-SL)</p>
+            <!-- Column Selection Section -->
+            <div id="columnSelectionSection" class="hidden">
+                <div class="section-header">
+                    <span class="section-icon">2</span>
+                    <span class="section-title">SELECT COLUMNS</span>
+                </div>
+                <div class="info-message">
+                    <strong>Map your data columns:</strong> Select which columns from your dataset correspond to each required field.
+                </div>
+                <div class="column-selection-card">
+                    <h4>Required Column Mappings</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hfuidColumn">Health Facility ID (hf_uid)</label>
+                            <select id="hfuidColumn" class="form-control"><option value="">-- Select Column --</option></select>
+                            <small style="color:#666;font-size:12px;">Example: HF001, HF002, FAC_123</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="yearColumn">Year Column</label>
+                            <select id="yearColumn" class="form-control"><option value="">-- Select Column --</option></select>
+                            <small style="color:#666;font-size:12px;">Example: 2023, 2024, 2025</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="monthColumn">Month Column</label>
+                            <select id="monthColumn" class="form-control"><option value="">-- Select Column --</option></select>
+                            <small style="color:#666;font-size:12px;">Example: 1-12 or 01-12</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportColumn">Report Status Column</label>
+                            <select id="reportColumn" class="form-control"><option value="">-- Select Column --</option></select>
+                            <small style="color:#666;font-size:12px;">Example: 1 = reported, 0 = not reported</small>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center;margin-top:1.5rem;">
+                    <button class="btn btn-gold" onclick="processColumnSelection()">Apply Column Selection</button>
+                    <button class="btn btn-secondary" onclick="resetFile()">Upload Different File</button>
+                </div>
+            </div>
+
+            <!-- Data Summary Section -->
+            <div id="dataSummary" class="hidden">
+                <div class="section-header">
+                    <span class="section-icon">3</span>
+                    <span class="section-title">DATA SUMMARY</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stats-card">
+                        <h4>Total Facilities</h4>
+                        <div class="metric-value" id="totalHFs">0</div>
+                        <p>All unique facilities</p>
+                    </div>
+                    <div class="stats-card">
+                        <h4>Active Facilities</h4>
+                        <div class="metric-value" id="activeHFs">0</div>
+                        <p>≥1 report in period</p>
+                    </div>
+                    <div class="stats-card">
+                        <h4>Never Reported</h4>
+                        <div class="metric-value" id="neverHFs">0</div>
+                        <p>Excluded from Chart 2</p>
+                    </div>
+                    <div class="stats-card">
+                        <h4>Time Periods</h4>
+                        <div class="metric-value" id="totalMonths">0</div>
+                        <p>Unique YYYY-MM</p>
+                    </div>
+                    <div class="stats-card">
+                        <h4>Total Records</h4>
+                        <div class="metric-value" id="totalRecords">0</div>
+                        <p>Data points</p>
+                    </div>
+                    <div class="stats-card">
+                        <h4>Reporting Rate</h4>
+                        <div class="metric-value" id="reportingRate">0%</div>
+                        <p>Overall rate</p>
+                    </div>
+                </div>
+
+                <!-- Color Palette -->
+                <div class="customization-card">
+                    <h4>Select Color Palette <span style="font-size:12px;color:#28a745;font-weight:500;">(CB = Colorblind-Friendly)</span></h4>
+                    <div class="palette-selector" id="paletteSelector"></div>
+                </div>
+
+                <!-- Custom Labels -->
+                <div class="customization-card">
+                    <h4>Customize Labels</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="chartTitle">Chart Title</label>
+                            <input type="text" id="chartTitle" class="form-control" value="Health Facility Reporting Status" placeholder="Enter chart title">
+                        </div>
+                        <div class="form-group">
+                            <label for="xAxisLabel">X-Axis Label</label>
+                            <input type="text" id="xAxisLabel" class="form-control" value="Time Period (YYYY-MM)" placeholder="X-axis label">
+                        </div>
+                        <div class="form-group">
+                            <label for="yAxisLabel">Y-Axis Label</label>
+                            <input type="text" id="yAxisLabel" class="form-control" value="Health Facilities (High → Low Reporting)" placeholder="Y-axis label">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reportedLabel">Reported Label (Status = 1)</label>
+                            <input type="text" id="reportedLabel" class="form-control" value="Reported" placeholder="Label for reported">
+                        </div>
+                        <div class="form-group">
+                            <label for="notReportedLabel">Not Reported Label (Status = 0)</label>
+                            <input type="text" id="notReportedLabel" class="form-control" value="No Report" placeholder="Label for not reported">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align:center;margin:2rem 0;">
+                    <button class="btn btn-primary" onclick="generateAnalysis()">Generate Heatmaps</button>
+                    <button class="btn btn-secondary" onclick="backToColumnSelection()">Change Column Selection</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="hidden">
+                <div class="section-header">
+                    <span class="section-icon">4</span>
+                    <span class="section-title">REPORTING STATUS HEATMAPS</span>
+                </div>
+
+                <!-- Chart 1: All Facilities -->
+                <div class="chart-container">
+                    <div style="margin-bottom:10px;">
+                        <span class="heatmap-label">CHART 1 — ALL FACILITIES</span>
+                    </div>
+                    <div class="chart-title" id="chart1Title">Health Facility Reporting Status — All Facilities</div>
+                    <div class="chart-subtitle" id="chart1Subtitle"></div>
+                    <canvas id="chart1Canvas" class="heatmap-canvas"></canvas>
+                    <div style="margin-top:1rem;">
+                        <button class="btn btn-success" onclick="downloadHeatmap('chart1Canvas', 'all_facilities')">⬇ Download Chart 1 (300 DPI PNG)</button>
+                    </div>
+                </div>
+
+                <hr class="heatmap-divider">
+
+                <!-- Chart 2: Active Facilities Only -->
+                <div class="chart-container">
+                    <div style="margin-bottom:10px;">
+                        <span class="heatmap-label active">CHART 2 — ACTIVE FACILITIES ONLY</span>
+                    </div>
+                    <div class="chart-title" id="chart2Title">Health Facility Reporting Status — Active Facilities Only</div>
+                    <div class="chart-subtitle" id="chart2Subtitle"></div>
+                    <canvas id="chart2Canvas" class="heatmap-canvas"></canvas>
+                    <div style="margin-top:1rem;">
+                        <button class="btn btn-success" onclick="downloadHeatmap('chart2Canvas', 'active_facilities')">⬇ Download Chart 2 (300 DPI PNG)</button>
+                    </div>
+                </div>
+
+                <div style="text-align:center;margin-top:1.5rem;">
+                    <button class="btn btn-secondary" onclick="backToSummary()">Back to Summary</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        let rawData = null;
-        let processedData = null;
-        let availableColumns = [];
-        let columnConfig = { hfuid: '', year: '', month: '', report: '' };
-        let selectedPalette = 'bluOrange'; // Default to colorblind-friendly
+    <div class="page-footer">
+        <p style="margin:0;font-weight:700;">National Malaria Control Programme</p>
+        <p>Ministry of Health and Sanitation, Sierra Leone</p>
+        <p style="font-size:11px;">Medical Stores Compound, Freetown, Sierra Leone</p>
+        <p style="font-size:10px;">© 2025 Informatics Consultancy Firm-Sierra Leone (ICF-SL)</p>
+    </div>
+</div>
 
-        // Color palettes: [notReported, reported]
-        // cbFriendly = true means colorblind-friendly
-        const colorPalettes = {
-            // Colorblind-friendly palettes (marked with CB)
-            bluOrange: { name: 'Blue / Orange', colors: ['#0077BB', '#EE7733'], cbFriendly: true },
-            bluYellow: { name: 'Blue / Yellow', colors: ['#0077BB', '#CCBB44'], cbFriendly: true },
-            tealOrange: { name: 'Teal / Orange', colors: ['#009988', '#EE7733'], cbFriendly: true },
-            purpleTeal: { name: 'Purple / Teal', colors: ['#AA3377', '#009988'], cbFriendly: true },
-            navyYellow: { name: 'Navy / Yellow', colors: ['#332288', '#CCBB44'], cbFriendly: true },
-            grayOrange: { name: 'Gray / Orange', colors: ['#888888', '#EE7733'], cbFriendly: true },
-            blackYellow: { name: 'Black / Yellow', colors: ['#000000', '#DDCC77'], cbFriendly: true },
-            viridis: { name: 'Viridis', colors: ['#440154', '#21918c'], cbFriendly: true },
-            
-            // Standard palettes
-            redGreen: { name: 'Red / Green', colors: ['#dc3545', '#28a745'], cbFriendly: false },
-            blueOrange: { name: 'Blue / Orange', colors: ['#0d6efd', '#fd7e14'], cbFriendly: false },
-            purpleYellow: { name: 'Purple / Yellow', colors: ['#6f42c1', '#ffc107'], cbFriendly: false },
-            grayGreen: { name: 'Gray / Green', colors: ['#6c757d', '#198754'], cbFriendly: false },
-            pinkTeal: { name: 'Pink / Teal', colors: ['#d63384', '#20c997'], cbFriendly: false },
-            redBlue: { name: 'Red / Blue', colors: ['#f44336', '#2196f3'], cbFriendly: false },
-            blackGold: { name: 'Black / Gold', colors: ['#212529', '#ffc107'], cbFriendly: false }
-        };
+<script>
+    let rawData = null;
+    let processedData = null;
+    let availableColumns = [];
+    let columnConfig = { hfuid: '', year: '', month: '', report: '' };
+    let selectedPalette = 'bluOrange';
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('fileInput').addEventListener('change', handleFileUpload);
-            renderPaletteSelector();
+    // HIGH-RES: 300 DPI / 96 DPI ≈ 3.125; use 3.125 for exact 300 DPI
+    const DPI_SCALE = 3.125;
+
+    const colorPalettes = {
+        bluOrange:    { name: 'Blue / Orange',   colors: ['#0077BB', '#EE7733'], cbFriendly: true },
+        bluYellow:    { name: 'Blue / Yellow',   colors: ['#0077BB', '#CCBB44'], cbFriendly: true },
+        tealOrange:   { name: 'Teal / Orange',   colors: ['#009988', '#EE7733'], cbFriendly: true },
+        purpleTeal:   { name: 'Purple / Teal',   colors: ['#AA3377', '#009988'], cbFriendly: true },
+        navyYellow:   { name: 'Navy / Yellow',   colors: ['#332288', '#CCBB44'], cbFriendly: true },
+        grayOrange:   { name: 'Gray / Orange',   colors: ['#888888', '#EE7733'], cbFriendly: true },
+        blackYellow:  { name: 'Black / Yellow',  colors: ['#000000', '#DDCC77'], cbFriendly: true },
+        viridis:      { name: 'Viridis',         colors: ['#440154', '#21918c'], cbFriendly: true },
+        redGreen:     { name: 'Red / Green',     colors: ['#dc3545', '#28a745'], cbFriendly: false },
+        blueOrange2:  { name: 'Blue / Orange',   colors: ['#0d6efd', '#fd7e14'], cbFriendly: false },
+        purpleYellow: { name: 'Purple / Yellow', colors: ['#6f42c1', '#ffc107'], cbFriendly: false },
+        grayGreen:    { name: 'Gray / Green',    colors: ['#6c757d', '#198754'], cbFriendly: false },
+        pinkTeal:     { name: 'Pink / Teal',     colors: ['#d63384', '#20c997'], cbFriendly: false },
+        redBlue:      { name: 'Red / Blue',      colors: ['#f44336', '#2196f3'], cbFriendly: false },
+        blackGold:    { name: 'Black / Gold',    colors: ['#212529', '#ffc107'], cbFriendly: false }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+        renderPaletteSelector();
+    });
+
+    function renderPaletteSelector() {
+        const container = document.getElementById('paletteSelector');
+        const cbPalettes = Object.entries(colorPalettes).filter(([,p]) => p.cbFriendly);
+        const stdPalettes = Object.entries(colorPalettes).filter(([,p]) => !p.cbFriendly);
+
+        let html = '<div style="grid-column:1/-1;margin-bottom:0.5rem;"><strong style="color:#28a745;">Colorblind-Friendly Palettes</strong></div>';
+        html += cbPalettes.map(([key, palette]) => `
+            <div class="palette-option ${key === selectedPalette ? 'selected' : ''}" onclick="selectPalette('${key}')" data-palette="${key}">
+                <input type="radio" name="palette" value="${key}" ${key === selectedPalette ? 'checked' : ''}>
+                <div class="palette-preview">
+                    <div class="color-box" style="background:${palette.colors[0]};"></div>
+                    <div class="color-box" style="background:${palette.colors[1]};"></div>
+                </div>
+                <div class="palette-name">${palette.name}</div>
+                <div style="font-size:10px;color:#28a745;">CB Accessible</div>
+            </div>`).join('');
+
+        html += '<div style="grid-column:1/-1;margin:1rem 0 0.5rem;padding-top:1rem;border-top:2px solid #ddd;"><strong style="color:#666;">Standard Palettes</strong></div>';
+        html += stdPalettes.map(([key, palette]) => `
+            <div class="palette-option ${key === selectedPalette ? 'selected' : ''}" onclick="selectPalette('${key}')" data-palette="${key}">
+                <input type="radio" name="palette" value="${key}" ${key === selectedPalette ? 'checked' : ''}>
+                <div class="palette-preview">
+                    <div class="color-box" style="background:${palette.colors[0]};"></div>
+                    <div class="color-box" style="background:${palette.colors[1]};"></div>
+                </div>
+                <div class="palette-name">${palette.name}</div>
+            </div>`).join('');
+
+        container.innerHTML = html;
+    }
+
+    function selectPalette(key) {
+        selectedPalette = key;
+        document.querySelectorAll('.palette-option').forEach(opt => {
+            opt.classList.toggle('selected', opt.dataset.palette === key);
+            opt.querySelector('input').checked = opt.dataset.palette === key;
         });
+    }
 
-        function renderPaletteSelector() {
-            const container = document.getElementById('paletteSelector');
-            
-            // Separate colorblind-friendly and standard palettes
-            const cbFriendlyPalettes = Object.entries(colorPalettes).filter(([k, p]) => p.cbFriendly);
-            const standardPalettes = Object.entries(colorPalettes).filter(([k, p]) => !p.cbFriendly);
-            
-            let html = '<div style="grid-column: 1/-1; margin-bottom: 0.5rem;"><strong style="color: #28a745;">Colorblind-Friendly Palettes</strong></div>';
-            
-            html += cbFriendlyPalettes.map(([key, palette]) => `
-                <div class="palette-option ${key === selectedPalette ? 'selected' : ''}" onclick="selectPalette('${key}')" data-palette="${key}">
-                    <input type="radio" name="palette" value="${key}" ${key === selectedPalette ? 'checked' : ''}>
-                    <div class="palette-preview">
-                        <div class="color-box" style="background: ${palette.colors[0]};" title="Not Reported"></div>
-                        <div class="color-box" style="background: ${palette.colors[1]};" title="Reported"></div>
-                    </div>
-                    <div class="palette-name">${palette.name}</div>
-                    <div style="font-size: 10px; color: #28a745;">CB Accessible</div>
-                </div>
-            `).join('');
-            
-            html += '<div style="grid-column: 1/-1; margin: 1rem 0 0.5rem; padding-top: 1rem; border-top: 2px solid #ddd;"><strong style="color: #666;">Standard Palettes</strong></div>';
-            
-            html += standardPalettes.map(([key, palette]) => `
-                <div class="palette-option ${key === selectedPalette ? 'selected' : ''}" onclick="selectPalette('${key}')" data-palette="${key}">
-                    <input type="radio" name="palette" value="${key}" ${key === selectedPalette ? 'checked' : ''}>
-                    <div class="palette-preview">
-                        <div class="color-box" style="background: ${palette.colors[0]};" title="Not Reported"></div>
-                        <div class="color-box" style="background: ${palette.colors[1]};" title="Reported"></div>
-                    </div>
-                    <div class="palette-name">${palette.name}</div>
-                </div>
-            `).join('');
-            
-            container.innerHTML = html;
-        }
+    function showAlert(message, type = 'info') {
+        const container = document.getElementById('alertContainer');
+        const div = document.createElement('div');
+        div.className = `alert alert-${type}`;
+        div.textContent = message;
+        container.innerHTML = '';
+        container.appendChild(div);
+        setTimeout(() => { if (div.parentNode) div.parentNode.removeChild(div); }, 5000);
+    }
 
-        function selectPalette(paletteKey) {
-            selectedPalette = paletteKey;
-            document.querySelectorAll('.palette-option').forEach(opt => {
-                opt.classList.toggle('selected', opt.dataset.palette === paletteKey);
-                opt.querySelector('input').checked = opt.dataset.palette === paletteKey;
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const ext = file.name.split('.').pop().toLowerCase();
+        document.getElementById('uploadProgress').classList.remove('hidden');
+
+        if (ext === 'csv') {
+            Papa.parse(file, {
+                header: true, skipEmptyLines: true,
+                complete: r => loadData(r.data, file.name),
+                error: e => { showAlert('CSV error: ' + e.message, 'error'); document.getElementById('uploadProgress').classList.add('hidden'); }
             });
-        }
-
-        function showAlert(message, type = 'info') {
-            const alertContainer = document.getElementById('alertContainer');
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.textContent = message;
-            alertContainer.innerHTML = '';
-            alertContainer.appendChild(alertDiv);
-            setTimeout(() => { if (alertDiv.parentNode) alertDiv.parentNode.removeChild(alertDiv); }, 5000);
-        }
-
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const fileName = file.name;
-            const fileExtension = fileName.split('.').pop().toLowerCase();
-
-            document.getElementById('uploadProgress').classList.remove('hidden');
-
-            if (fileExtension === 'csv') {
-                Papa.parse(file, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: function(results) { loadData(results.data, fileName); },
-                    error: function(error) {
-                        showAlert('Error reading CSV: ' + error.message, 'error');
-                        document.getElementById('uploadProgress').classList.add('hidden');
-                    }
-                });
-            } else if (['xlsx', 'xls'].includes(fileExtension)) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, {type: 'array'});
-                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
-                        loadData(jsonData, fileName);
-                    } catch (error) {
-                        showAlert('Error reading Excel: ' + error.message, 'error');
-                        document.getElementById('uploadProgress').classList.add('hidden');
-                    }
-                };
-                reader.readAsArrayBuffer(file);
-            } else {
-                showAlert('Please upload a CSV or Excel file', 'error');
-                document.getElementById('uploadProgress').classList.add('hidden');
-            }
-        }
-
-        function loadData(data, fileName) {
-            document.getElementById('uploadProgress').classList.add('hidden');
-            if (!data || data.length === 0) { showAlert('The file appears to be empty.', 'error'); return; }
-
-            rawData = data;
-            availableColumns = Object.keys(data[0] || {});
-            showAlert(`Loaded ${data.length} rows and ${availableColumns.length} columns.`, 'success');
-            populateColumnSelectors();
-            document.getElementById('uploadSection').classList.add('hidden');
-            document.getElementById('columnSelectionSection').classList.remove('hidden');
-        }
-
-        function populateColumnSelectors() {
-            const selects = ['hfuidColumn', 'yearColumn', 'monthColumn', 'reportColumn'];
-            selects.forEach(id => {
-                const select = document.getElementById(id);
-                select.innerHTML = '<option value="">-- Select Column --</option>';
-                availableColumns.forEach(col => { select.innerHTML += `<option value="${col}">${col}</option>`; });
-            });
-            autoSelectColumns();
-        }
-
-        function autoSelectColumns() {
-            const patterns = {
-                hfuidColumn: ['hf_uid', 'hfuid', 'facility_id', 'facilityid', 'hf_id', 'orgunit', 'facility'],
-                yearColumn: ['year', 'yr'],
-                monthColumn: ['month', 'mon', 'mth'],
-                reportColumn: ['report', 'reported', 'status', 'reporting']
+        } else if (['xlsx','xls'].includes(ext)) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+                    loadData(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]), file.name);
+                } catch(err) { showAlert('Excel error: ' + err.message, 'error'); document.getElementById('uploadProgress').classList.add('hidden'); }
             };
+            reader.readAsArrayBuffer(file);
+        } else {
+            showAlert('Please upload a CSV or Excel file', 'error');
+            document.getElementById('uploadProgress').classList.add('hidden');
+        }
+    }
 
-            availableColumns.forEach(col => {
-                const colLower = col.toLowerCase();
-                Object.entries(patterns).forEach(([selectId, keywords]) => {
-                    if (keywords.some(p => colLower.includes(p) || colLower === p)) {
-                        document.getElementById(selectId).value = col;
-                    }
-                });
+    function loadData(data, fileName) {
+        document.getElementById('uploadProgress').classList.add('hidden');
+        if (!data || data.length === 0) { showAlert('File is empty.', 'error'); return; }
+        rawData = data;
+        availableColumns = Object.keys(data[0] || {});
+        showAlert(`Loaded ${data.length} rows and ${availableColumns.length} columns from "${fileName}".`, 'success');
+        populateColumnSelectors();
+        document.getElementById('uploadSection').classList.add('hidden');
+        document.getElementById('columnSelectionSection').classList.remove('hidden');
+    }
+
+    function populateColumnSelectors() {
+        ['hfuidColumn','yearColumn','monthColumn','reportColumn'].forEach(id => {
+            const sel = document.getElementById(id);
+            sel.innerHTML = '<option value="">-- Select Column --</option>';
+            availableColumns.forEach(col => { sel.innerHTML += `<option value="${col}">${col}</option>`; });
+        });
+        autoSelectColumns();
+    }
+
+    function autoSelectColumns() {
+        const patterns = {
+            hfuidColumn:  ['hf_uid','hfuid','facility_id','facilityid','hf_id','orgunit','facility'],
+            yearColumn:   ['year','yr'],
+            monthColumn:  ['month','mon','mth'],
+            reportColumn: ['report','reported','status','reporting']
+        };
+        availableColumns.forEach(col => {
+            const c = col.toLowerCase();
+            Object.entries(patterns).forEach(([id, keys]) => {
+                if (keys.some(k => c.includes(k) || c === k)) document.getElementById(id).value = col;
             });
-        }
+        });
+    }
 
-        function processColumnSelection() {
-            columnConfig.hfuid = document.getElementById('hfuidColumn').value;
-            columnConfig.year = document.getElementById('yearColumn').value;
-            columnConfig.month = document.getElementById('monthColumn').value;
-            columnConfig.report = document.getElementById('reportColumn').value;
+    function processColumnSelection() {
+        columnConfig.hfuid  = document.getElementById('hfuidColumn').value;
+        columnConfig.year   = document.getElementById('yearColumn').value;
+        columnConfig.month  = document.getElementById('monthColumn').value;
+        columnConfig.report = document.getElementById('reportColumn').value;
 
-            if (!columnConfig.hfuid) { showAlert('Please select a Health Facility ID column', 'error'); return; }
-            if (!columnConfig.year) { showAlert('Please select a Year column', 'error'); return; }
-            if (!columnConfig.month) { showAlert('Please select a Month column', 'error'); return; }
-            if (!columnConfig.report) { showAlert('Please select a Report Status column', 'error'); return; }
+        if (!columnConfig.hfuid)  { showAlert('Please select a Health Facility ID column', 'error'); return; }
+        if (!columnConfig.year)   { showAlert('Please select a Year column', 'error'); return; }
+        if (!columnConfig.month)  { showAlert('Please select a Month column', 'error'); return; }
+        if (!columnConfig.report) { showAlert('Please select a Report Status column', 'error'); return; }
 
-            processData();
-        }
+        processData();
+    }
 
-        function processData() {
-            processedData = rawData.map(row => {
-                const year = parseInt(row[columnConfig.year]);
-                const month = parseInt(row[columnConfig.month]);
-                const report = parseInt(row[columnConfig.report]);
-                const dateStr = `${year}-${month.toString().padStart(2, '0')}`;
-                return { hf_uid: row[columnConfig.hfuid], Date: dateStr, status: report === 1 ? 1 : 0 };
-            }).filter(row => row.hf_uid && row.Date && row.Date !== 'NaN-NaN');
+    function processData() {
+        processedData = rawData.map(row => {
+            const year  = parseInt(row[columnConfig.year]);
+            const month = parseInt(row[columnConfig.month]);
+            const report = parseInt(row[columnConfig.report]);
+            const dateStr = `${year}-${month.toString().padStart(2,'0')}`;
+            return { hf_uid: row[columnConfig.hfuid], Date: dateStr, status: report === 1 ? 1 : 0 };
+        }).filter(row => row.hf_uid && row.Date && !row.Date.startsWith('NaN'));
 
-            showAlert('Data processed successfully!', 'success');
-            updateDataSummary();
-            document.getElementById('columnSelectionSection').classList.add('hidden');
-            document.getElementById('dataSummary').classList.remove('hidden');
-        }
+        showAlert('Data processed successfully!', 'success');
+        updateDataSummary();
+        document.getElementById('columnSelectionSection').classList.add('hidden');
+        document.getElementById('dataSummary').classList.remove('hidden');
+    }
 
-        function updateDataSummary() {
-            if (!processedData) return;
-            const totalHFs = new Set(processedData.map(row => row.hf_uid)).size;
-            const totalMonths = new Set(processedData.map(row => row.Date)).size;
-            const totalRecords = processedData.length;
-            const reportingCount = processedData.filter(row => row.status === 1).length;
-            const reportingRate = ((reportingCount / totalRecords) * 100).toFixed(1);
+    function updateDataSummary() {
+        if (!processedData) return;
+        const allHFIds = [...new Set(processedData.map(r => r.hf_uid))];
+        const activeHFIds = allHFIds.filter(hfId => processedData.some(r => r.hf_uid === hfId && r.status === 1));
+        const neverHFIds  = allHFIds.filter(hfId => processedData.every(r => r.hf_uid !== hfId || r.status === 0));
+        const totalMonths = new Set(processedData.map(r => r.Date)).size;
+        const total = processedData.length;
+        const reported = processedData.filter(r => r.status === 1).length;
 
-            document.getElementById('totalHFs').textContent = totalHFs.toLocaleString();
-            document.getElementById('totalMonths').textContent = totalMonths.toLocaleString();
-            document.getElementById('totalRecords').textContent = totalRecords.toLocaleString();
-            document.getElementById('reportingRate').textContent = `${reportingRate}%`;
-        }
+        document.getElementById('totalHFs').textContent    = allHFIds.length.toLocaleString();
+        document.getElementById('activeHFs').textContent   = activeHFIds.length.toLocaleString();
+        document.getElementById('neverHFs').textContent    = neverHFIds.length.toLocaleString();
+        document.getElementById('totalMonths').textContent = totalMonths.toLocaleString();
+        document.getElementById('totalRecords').textContent = total.toLocaleString();
+        document.getElementById('reportingRate').textContent = ((reported / total) * 100).toFixed(1) + '%';
+    }
 
-        function generateAnalysis() {
-            if (!processedData) { showAlert('Please process data first', 'error'); return; }
-            showAlert('Generating heatmap...', 'info');
+    function generateAnalysis() {
+        if (!processedData) { showAlert('Please process data first', 'error'); return; }
+        try {
+            document.getElementById('dataSummary').classList.add('hidden');
+            document.getElementById('resultsSection').classList.remove('hidden');
 
-            try {
-                document.getElementById('dataSummary').classList.add('hidden');
-                document.getElementById('resultsSection').classList.remove('hidden');
-                const canvas = document.getElementById('currentChart');
-                generateOverallHeatmap(canvas);
-                showAlert('Heatmap generated!', 'success');
-            } catch (error) {
-                showAlert('Error: ' + error.message, 'error');
-            }
-        }
-
-        function generateOverallHeatmap(canvas) {
-            const hfData = {};
-            processedData.forEach(row => {
-                if (!hfData[row.hf_uid]) hfData[row.hf_uid] = {};
-                hfData[row.hf_uid][row.Date] = row.status;
-            });
-
-            const dates = [...new Set(processedData.map(row => row.Date))].sort();
-            const hfReportingRates = Object.keys(hfData).map(hfId => {
-                const reports = dates.map(date => hfData[hfId][date] || 0);
-                const reportCount = reports.filter(r => r === 1).length;
-                return { hfId, rate: reportCount / dates.length };
-            });
-            hfReportingRates.sort((a, b) => b.rate - a.rate);
-            const hfIds = hfReportingRates.map(item => item.hfId);
-
-            if (hfIds.length === 0 || dates.length === 0) { showAlert('No valid data to display', 'error'); return; }
-
-            const ctx = canvas.getContext('2d');
-            const palette = colorPalettes[selectedPalette];
-            const chartTitle = document.getElementById('chartTitle').value || 'Health Facility Reporting Status';
-            const xAxisLabel = document.getElementById('xAxisLabel').value || 'Time Period (YYYY-MM)';
-            const yAxisLabel = document.getElementById('yAxisLabel').value || 'Health Facilities';
-            const reportedLabel = document.getElementById('reportedLabel').value || 'Reported';
+            const palette      = colorPalettes[selectedPalette];
+            const chartTitle   = document.getElementById('chartTitle').value   || 'Health Facility Reporting Status';
+            const xAxisLabel   = document.getElementById('xAxisLabel').value   || 'Time Period (YYYY-MM)';
+            const yAxisLabel   = document.getElementById('yAxisLabel').value   || 'Health Facilities';
+            const reportedLabel    = document.getElementById('reportedLabel').value    || 'Reported';
             const notReportedLabel = document.getElementById('notReportedLabel').value || 'No Report';
 
-            const canvasSize = 800;
-            const margins = { top: 80, bottom: 70, left: 40, right: 20 };
-            const heatmapWidth = canvasSize - margins.left - margins.right;
-            const heatmapHeight = canvasSize - margins.top - margins.bottom;
-            const cellWidth = heatmapWidth / dates.length;
-            const cellHeight = heatmapHeight / hfIds.length;
+            // All facilities
+            const allHFIds = [...new Set(processedData.map(r => r.hf_uid))];
+            // Active facilities only (at least one report = 1)
+            const activeHFIds = allHFIds.filter(hfId => processedData.some(r => r.hf_uid === hfId && r.status === 1));
+            const neverCount  = allHFIds.length - activeHFIds.length;
 
-            canvas.width = canvasSize;
-            canvas.height = canvasSize;
-            canvas.style.width = canvasSize + 'px';
-            canvas.style.height = canvasSize + 'px';
+            const title1 = `${chartTitle} — All Facilities`;
+            const title2 = `${chartTitle} — Active Facilities Only (${neverCount} never-reporting HFs excluded)`;
 
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvasSize, canvasSize);
+            document.getElementById('chart1Title').textContent = title1;
+            document.getElementById('chart2Title').textContent = title2;
+            document.getElementById('chart1Subtitle').textContent = `${allHFIds.length} facilities`;
+            document.getElementById('chart2Subtitle').textContent = `${activeHFIds.length} facilities with ≥1 report`;
 
-            const startX = margins.left;
-            const startY = margins.top;
+            drawHeatmap('chart1Canvas', allHFIds,    title1, xAxisLabel, yAxisLabel, reportedLabel, notReportedLabel, palette);
+            drawHeatmap('chart2Canvas', activeHFIds, title2, xAxisLabel, yAxisLabel, reportedLabel, notReportedLabel, palette);
 
-            // Title
-            ctx.fillStyle = '#004080';
-            ctx.font = 'bold 16px Oswald, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(chartTitle, canvasSize / 2, 20);
+            showAlert('Both heatmaps generated!', 'success');
+        } catch(err) {
+            showAlert('Error: ' + err.message, 'error');
+        }
+    }
 
-            // Legend
-            const legendY = 40;
-            const legendCenterX = canvasSize / 2;
+    /**
+     * Core heatmap renderer — 300 DPI capable
+     * hfIdsSubset: array of hf_uid values to include
+     */
+    function drawHeatmap(canvasId, hfIdsSubset, title, xLabel, yLabel, reportedLbl, notReportedLbl, palette) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
 
-            ctx.fillStyle = '#f8f9fa';
-            ctx.fillRect(legendCenterX - 130, legendY - 8, 260, 28);
-            ctx.strokeStyle = '#004080';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(legendCenterX - 130, legendY - 8, 260, 28);
+        // Build per-HF lookup
+        const hfData = {};
+        processedData.forEach(row => {
+            if (!hfIdsSubset.includes(row.hf_uid)) return;
+            if (!hfData[row.hf_uid]) hfData[row.hf_uid] = {};
+            hfData[row.hf_uid][row.Date] = row.status;
+        });
 
-            ctx.font = '11px Oswald, sans-serif';
-            ctx.textAlign = 'left';
+        const dates = [...new Set(processedData.map(r => r.Date))].sort();
+        const nDates = dates.length;
+        const nHFs   = hfIdsSubset.length;
 
-            ctx.fillStyle = palette.colors[0];
-            ctx.fillRect(legendCenterX - 115, legendY, 16, 10);
-            ctx.fillStyle = '#000000';
-            ctx.fillText(`${notReportedLabel} (0)`, legendCenterX - 95, legendY + 9);
+        if (nHFs === 0 || nDates === 0) { showAlert('No data for this chart.', 'error'); return; }
 
-            ctx.fillStyle = palette.colors[1];
-            ctx.fillRect(legendCenterX + 25, legendY, 16, 10);
-            ctx.fillStyle = '#000000';
-            ctx.fillText(`${reportedLabel} (1)`, legendCenterX + 45, legendY + 9);
+        // Sort HFs by reporting rate descending
+        const sorted = hfIdsSubset.map(hfId => {
+            const reports = dates.map(d => (hfData[hfId] && hfData[hfId][d]) || 0);
+            return { hfId, rate: reports.filter(r => r === 1).length / nDates };
+        }).sort((a, b) => b.rate - a.rate);
+        const hfIds = sorted.map(s => s.hfId);
 
-            // Draw heatmap cells
-            hfIds.forEach((hfId, hfIndex) => {
-                dates.forEach((date, dateIndex) => {
-                    const status = hfData[hfId][date] || 0;
-                    const cellX = startX + dateIndex * cellWidth;
-                    const cellY = startY + hfIndex * cellHeight;
-                    ctx.fillStyle = status === 1 ? palette.colors[1] : palette.colors[0];
-                    ctx.fillRect(cellX, cellY, cellWidth + 0.5, cellHeight + 0.5);
-                });
+        // ---- Layout constants (logical pixel space) ----
+        // Margins: generous bottom for rotated date labels, left for Y-axis title
+        const CELL_W_MIN = 18;   // minimum cell width
+        const CELL_H_MIN = 3;    // minimum cell height
+        const TITLE_H    = 60;
+        const LEGEND_H   = 40;
+        const X_LABEL_H  = 90;   // rotated date labels area
+        const X_TITLE_H  = 28;
+        const Y_TITLE_W  = 28;
+        const RIGHT_PAD  = 20;
+
+        // Compute logical canvas dimensions
+        const cellW = Math.max(CELL_W_MIN, Math.floor(900 / nDates));
+        const cellH = Math.max(CELL_H_MIN, Math.min(18, Math.floor(700 / nHFs)));
+
+        const heatW = cellW * nDates;
+        const heatH = cellH * nHFs;
+
+        const marginTop    = TITLE_H + LEGEND_H;
+        const marginBottom = X_LABEL_H + X_TITLE_H;
+        const marginLeft   = Y_TITLE_W + 10;
+        const marginRight  = RIGHT_PAD;
+
+        const logicalW = marginLeft + heatW + marginRight;
+        const logicalH = marginTop  + heatH + marginBottom;
+
+        // Apply DPI scale
+        const pw = Math.round(logicalW * DPI_SCALE);
+        const ph = Math.round(logicalH * DPI_SCALE);
+
+        canvas.width  = pw;
+        canvas.height = ph;
+        // Display at logical size (capped at 100% container width)
+        canvas.style.width  = Math.min(logicalW, 1300) + 'px';
+        canvas.style.height = 'auto';
+
+        ctx.scale(DPI_SCALE, DPI_SCALE);
+
+        // Background
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, logicalW, logicalH);
+
+        const startX = marginLeft;
+        const startY = marginTop;
+
+        // ---- Title ----
+        ctx.fillStyle = '#004080';
+        ctx.font = 'bold 16px Oswald, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        // Word-wrap title if too long
+        const maxTitleW = logicalW - 40;
+        wrapText(ctx, title, logicalW / 2, 10, maxTitleW, 22);
+
+        // ---- Legend ----
+        const legendY  = TITLE_H + 6;
+        const legendCX = logicalW / 2;
+        const boxW = 20; const boxH = 14;
+        const gap  = 100;
+
+        ctx.fillStyle = '#f0f4f8';
+        ctx.strokeStyle = '#004080';
+        ctx.lineWidth = 1.5;
+        const legBoxW = 280; const legBoxH = 28;
+        ctx.fillRect(legendCX - legBoxW/2, legendY - 4, legBoxW, legBoxH);
+        ctx.strokeRect(legendCX - legBoxW/2, legendY - 4, legBoxW, legBoxH);
+
+        // Not Reported swatch
+        ctx.fillStyle = palette.colors[0];
+        ctx.fillRect(legendCX - legBoxW/2 + 12, legendY + 2, boxW, boxH);
+        ctx.strokeStyle = '#555';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(legendCX - legBoxW/2 + 12, legendY + 2, boxW, boxH);
+
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 12px Oswald, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${notReportedLbl} (0)`, legendCX - legBoxW/2 + 38, legendY + 9);
+
+        // Reported swatch
+        ctx.fillStyle = palette.colors[1];
+        ctx.fillRect(legendCX + gap/2 - 10, legendY + 2, boxW, boxH);
+        ctx.strokeStyle = '#555';
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(legendCX + gap/2 - 10, legendY + 2, boxW, boxH);
+
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 12px Oswald, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(`${reportedLbl} (1)`, legendCX + gap/2 + 16, legendY + 9);
+
+        // ---- Heatmap cells ----
+        hfIds.forEach((hfId, hi) => {
+            dates.forEach((date, di) => {
+                const status = (hfData[hfId] && hfData[hfId][date]) || 0;
+                ctx.fillStyle = status === 1 ? palette.colors[1] : palette.colors[0];
+                ctx.fillRect(startX + di * cellW, startY + hi * cellH, cellW + 0.5, cellH + 0.5);
             });
+        });
 
-            // X-axis labels (dates) - 90 degrees
-            ctx.fillStyle = '#000000';
-            ctx.font = '9px Oswald, sans-serif';
-            ctx.textAlign = 'right';
-            ctx.textBaseline = 'middle';
+        // Outer border around heatmap
+        ctx.strokeStyle = '#004080';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(startX, startY, heatW, heatH);
 
-            dates.forEach((date, dateIndex) => {
-                if (dateIndex % 3 === 0) {
-                    const labelX = startX + dateIndex * cellWidth + cellWidth / 2;
-                    ctx.save();
-                    ctx.translate(labelX + 3, startY + heatmapHeight + 8);
-                    ctx.rotate(-Math.PI / 2);
-                    ctx.fillText(date, 0, 0);
-                    ctx.restore();
-                }
-            });
+        // ---- X-axis: all YYYY-MM labels, rotated 90° ----
+        ctx.fillStyle = '#111111';
+        ctx.font = 'bold 11px Oswald, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
 
-            // Axis titles
-            ctx.fillStyle = '#004080';
-            ctx.font = 'bold 11px Oswald, sans-serif';
-            ctx.textAlign = 'center';
+        // Decide label interval: show every label if cellW >= 12, else every Nth
+        const labelInterval = cellW >= 12 ? 1 : Math.ceil(14 / cellW);
 
+        dates.forEach((date, di) => {
+            if (di % labelInterval !== 0) return;
+            const cx = startX + di * cellW + cellW / 2;
+            const cy = startY + heatH + 6;
             ctx.save();
-            ctx.translate(12, startY + heatmapHeight / 2);
+            ctx.translate(cx, cy);
             ctx.rotate(-Math.PI / 2);
-            ctx.fillText(yAxisLabel, 0, 0);
+            ctx.fillText(date, 0, 0);
             ctx.restore();
+        });
 
-            ctx.fillText(xAxisLabel, startX + heatmapWidth / 2, canvasSize - 8);
+        // ---- X-axis title ----
+        ctx.fillStyle = '#004080';
+        ctx.font = 'bold 13px Oswald, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(xLabel, startX + heatW / 2, logicalH - 4);
 
-            // Info
-            ctx.fillStyle = '#666666';
-            ctx.font = '9px Oswald, sans-serif';
-            ctx.textAlign = 'right';
-            ctx.fillText(`${hfIds.length} facilities × ${dates.length} periods`, canvasSize - 5, canvasSize - 3);
-        }
+        // ---- Y-axis title ----
+        ctx.save();
+        ctx.fillStyle = '#004080';
+        ctx.font = 'bold 13px Oswald, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.translate(14, startY + heatH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText(yLabel, 0, 0);
+        ctx.restore();
 
-        function downloadHeatmap() {
-            const canvas = document.getElementById('currentChart');
-            const link = document.createElement('a');
-            const title = document.getElementById('chartTitle').value || 'hf_reporting_heatmap';
-            link.download = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            showAlert('Heatmap image downloaded!', 'success');
-        }
+        // ---- Footer info ----
+        ctx.fillStyle = '#888888';
+        ctx.font = '10px Oswald, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`${nHFs} facilities × ${nDates} periods | ICF-SL`, logicalW - 5, logicalH - 4);
+    }
 
-        function backToColumnSelection() {
-            document.getElementById('dataSummary').classList.add('hidden');
-            document.getElementById('columnSelectionSection').classList.remove('hidden');
-        }
+    /** Simple multi-line text wrap for canvas */
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let currentY = y;
+        words.forEach((word, i) => {
+            const test = line + (line ? ' ' : '') + word;
+            if (ctx.measureText(test).width > maxWidth && line) {
+                ctx.fillText(line, x, currentY);
+                line = word;
+                currentY += lineHeight;
+            } else {
+                line = test;
+            }
+        });
+        if (line) ctx.fillText(line, x, currentY);
+    }
 
-        function backToSummary() {
-            document.getElementById('resultsSection').classList.add('hidden');
-            document.getElementById('dataSummary').classList.remove('hidden');
-        }
+    /** Download a canvas as 300 DPI PNG */
+    function downloadHeatmap(canvasId, suffix) {
+        const canvas = document.getElementById(canvasId);
+        const title  = document.getElementById('chartTitle').value || 'hf_reporting';
+        const safe   = title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        const link   = document.createElement('a');
+        link.download = `${safe}_${suffix}_300dpi.png`;
+        link.href     = canvas.toDataURL('image/png');
+        link.click();
+        showAlert('High-resolution image downloaded!', 'success');
+    }
 
-        function resetFile() {
-            rawData = null;
-            processedData = null;
-            availableColumns = [];
-            columnConfig = { hfuid: '', year: '', month: '', report: '' };
+    function backToColumnSelection() {
+        document.getElementById('dataSummary').classList.add('hidden');
+        document.getElementById('columnSelectionSection').classList.remove('hidden');
+    }
 
-            document.getElementById('uploadSection').classList.remove('hidden');
-            document.getElementById('columnSelectionSection').classList.add('hidden');
-            document.getElementById('dataSummary').classList.add('hidden');
-            document.getElementById('resultsSection').classList.add('hidden');
-            document.getElementById('fileInput').value = '';
-            document.getElementById('alertContainer').innerHTML = '';
+    function backToSummary() {
+        document.getElementById('resultsSection').classList.add('hidden');
+        document.getElementById('dataSummary').classList.remove('hidden');
+    }
 
-            // Reset custom labels
-            document.getElementById('chartTitle').value = 'Health Facility Reporting Status';
-            document.getElementById('xAxisLabel').value = 'Time Period (YYYY-MM)';
-            document.getElementById('yAxisLabel').value = 'Health Facilities (High → Low Reporting)';
-            document.getElementById('reportedLabel').value = 'Reported';
-            document.getElementById('notReportedLabel').value = 'No Report';
-
-            // Reset palette to colorblind-friendly default
-            selectedPalette = 'bluOrange';
-            renderPaletteSelector();
-        }
-    </script>
+    function resetFile() {
+        rawData = null; processedData = null; availableColumns = [];
+        columnConfig = { hfuid:'', year:'', month:'', report:'' };
+        ['uploadSection'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+        ['columnSelectionSection','dataSummary','resultsSection'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        document.getElementById('fileInput').value = '';
+        document.getElementById('alertContainer').innerHTML = '';
+        document.getElementById('chartTitle').value    = 'Health Facility Reporting Status';
+        document.getElementById('xAxisLabel').value    = 'Time Period (YYYY-MM)';
+        document.getElementById('yAxisLabel').value    = 'Health Facilities (High → Low Reporting)';
+        document.getElementById('reportedLabel').value    = 'Reported';
+        document.getElementById('notReportedLabel').value = 'No Report';
+        selectedPalette = 'bluOrange';
+        renderPaletteSelector();
+    }
+</script>
 </body>
 </html>
